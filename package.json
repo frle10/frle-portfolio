@@ -1,0 +1,63 @@
+{
+  "name": "vrba-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@hookform/resolvers": "^0.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.54",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "@types/toastr": "^2.1.38",
+    "autosize": "^4.0.2",
+    "axios": "^0.20.0",
+    "emailjs-com": "^2.6.3",
+    "emotion": "^10.0.27",
+    "mobx": "^5.15.6",
+    "mobx-react": "^6.3.0",
+    "mobx-react-router": "^4.1.0",
+    "moment": "^2.27.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-emotion": "^10.0.0",
+    "react-hook-form": "^6.7.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-router-hash-link": "^2.0.0",
+    "react-scripts": "3.4.3",
+    "react-toastify": "^6.0.8",
+    "react-use": "^15.3.3",
+    "typescript": "^3.9.7",
+    "yup": "^0.29.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/autosize": "^3.0.7",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/react-router-hash-link": "^1.2.1",
+    "@types/yup": "^0.29.6"
+  }
+}
