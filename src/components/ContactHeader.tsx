@@ -52,7 +52,7 @@ const contactHeaderContainer = css({
   zIndex: 1,
 });
 
-const email = 'dominikvrbic01@ gmail.com';
+const email = 'frle.official@ gmail.com';
 
 const ContactHeader = () => {
   return (

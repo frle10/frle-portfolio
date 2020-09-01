@@ -14,10 +14,10 @@ const toastOptions: ToastOptions = {
 export const sendEmail = (templateParams: any) => {
   emailjs
     .send(
-      'default_service',
-      'contactform',
+      'service_p9e4a0y',
+      'template_k49zyxa',
       templateParams,
-      'user_GMHAo3Sd1v18QWdl3q3oT'
+      'user_GJbe1KZCLCMgBc02yLmsE'
     )
     .then(
       () => {

@@ -1,7 +1,6 @@
 import GithubLogoWhite from './images/github-logo-white.svg';
 import GithubLogoBlue from './images/github-logo-blue.svg';
 import InstagramLogo from './images/instagram-logo.svg';
-import VrbaLogo from './images/vrba-logo.svg';
 import StickmanDrawing from './images/stickman-drawing.svg';
 import LeftArrowIcon from './images/left-arrow.svg';
 import RightArrowIcon from './images/right-arrow.svg';
@@ -23,7 +22,6 @@ export {
   GithubLogoWhite,
   GithubLogoBlue,
   InstagramLogo,
-  VrbaLogo,
   StickmanDrawing,
   LeftArrowIcon,
   RightArrowIcon,

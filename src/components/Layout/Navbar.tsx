@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react';
 import { css, cx } from 'emotion';
 import { HashLink } from 'react-router-hash-link';
 import { routerStore } from '../../router/routerStore';
-import { VrbaLogo, breakpoints, mq, HamburgerIcon } from '../../assets';
+import { breakpoints, mq, HamburgerIcon } from '../../assets';
 import { useWindowSize } from 'react-use';
 
 const navbarStyle = css({
@@ -58,6 +58,9 @@ const hamImg = css({
 });
 
 const logoStyle = css({
+  color: '#3f49fe',
+  fontSize: '26px',
+  fontWeight: 'bolder',
   cursor: 'pointer',
 });
 
@@ -75,12 +78,9 @@ const Navbar = () => {
 
   return (
     <nav className={navbarStyle}>
-      <img
-        src={VrbaLogo}
-        alt='Vrba Logo'
-        className={logoStyle}
-        onClick={routerStore.toHome}
-      />
+      <span className={logoStyle} onClick={routerStore.toHome}>
+        FRLE
+      </span>
       <ul className={cx(navButtonsStyle, variableDisplay(width))}>
         <li className={listItemStyle} onClick={() => routerStore.toHome()}>
           Home

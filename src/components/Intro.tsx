@@ -71,7 +71,7 @@ const Intro = () => {
         <span className={aboveLine}>I've always preferred coding</span>
         <div className={divLine}></div>
         <span className={belowLine}>
-          I'm Dominik Vrbic, not the greatest artist, but a great programmer
+          I'm Ivan Skorupan, not the greatest artist, but a great programmer
         </span>
       </div>
       <div className={imgContainer}>

@@ -137,12 +137,12 @@ const PoisonPicker = () => {
         </li>
         <li className={listItemStyle}>
           <a
-            href='https://nodejs.org/en/'
+            href='https://www.java.com/en/'
             target='_blank'
             rel='noopener noreferrer'
             className={linkStyle}
           >
-            Node js
+            Java
           </a>
         </li>
         <li className={listItemStyle}>
