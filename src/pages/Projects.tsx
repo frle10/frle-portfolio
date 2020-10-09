@@ -4,22 +4,26 @@ import { css, cx } from 'emotion';
 import { useParams } from 'react-router';
 import { routerStore } from '../router/routerStore';
 import {
-  Project3Image,
   GithubLogoWhite,
   LeftArrowIcon,
   RightArrowIcon,
-  mq,
   GlobeIcon,
+  ProjectsBackgroundImage,
+  mq,
 } from '../assets';
 
 interface Props {
   repos: any;
 }
 
+interface ParamTypes {
+  id: string | undefined;
+}
+
 const projectsOuterDivStyle = css({
   width: '100%',
   height: '100%',
-  backgroundImage: `url(${Project3Image})`,
+  backgroundImage: `url(${ProjectsBackgroundImage})`,
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
@@ -82,10 +86,6 @@ const projectFooter = css({
   },
 });
 
-const redBlur = css({
-  backgroundColor: 'rgba(250, 40, 65, 0.4)',
-});
-
 const widthThird = (textAlign: any) =>
   css({
     display: 'block',
@@ -125,8 +125,8 @@ const linkContainer = css({
 });
 
 const Projects = (props: Props) => {
-  const { id } = useParams();
-  const repoIndex = parseInt(id) - 1;
+  const { id } = useParams<ParamTypes>();
+  const repoIndex = parseInt(id ? id : '') - 1;
   const repo = props.repos[repoIndex];
   const dateCreated = moment(repo.created_at).format('MMMM, YYYY');
 
@@ -138,67 +138,61 @@ const Projects = (props: Props) => {
     setTimeout(() => (innerDiv.style.opacity = '1'), 500);
   };
 
-  const previousProject = (e: MouseEvent) => {
+  const previousProject = (_e: MouseEvent) => {
     switchProject(repoIndex === 0 ? 2 : repoIndex - 1);
   };
 
-  const nextProject = (e: MouseEvent) => {
+  const nextProject = (_e: MouseEvent) => {
     switchProject(repoIndex === 2 ? 0 : repoIndex + 1);
   };
 
   return (
     <div className={projectsOuterDivStyle}>
-      <div className={redBlur}>
-        <div id='innerDiv' className={projectsInnerDivStyle}>
-          <div className={mainContent}>
-            <img
-              src={LeftArrowIcon}
-              alt='Previous Project Arrow'
-              width='55'
-              className={arrowStyle}
-              onClick={previousProject}
-            />
-            <div className={projectInfo}>
-              <div className={repoName}>{repo.name}</div>
-              <div className={divLine}></div>
-              <div className={repoDesc}>
-                {repo.description
-                  ? repo.description
-                  : 'No description for now. :('}
-              </div>
+      <div id='innerDiv' className={projectsInnerDivStyle}>
+        <div className={mainContent}>
+          <img
+            src={LeftArrowIcon}
+            alt='Previous Project Arrow'
+            width='55'
+            className={arrowStyle}
+            onClick={previousProject}
+          />
+          <div className={projectInfo}>
+            <div className={repoName}>{repo.name}</div>
+            <div className={divLine}></div>
+            <div className={repoDesc}>
+              {repo.description
+                ? repo.description
+                : 'No description for now. :('}
             </div>
-            <img
-              src={RightArrowIcon}
-              alt='Previous Project Arrow'
-              width='55'
-              className={arrowStyle}
-              onClick={nextProject}
-            />
           </div>
-          <div className={projectFooter}>
-            <div className={widthThird('left')}>{repo.language}</div>
-            <div className={cx(widthThird('center'), linkContainer)}>
-              {repo.homepage ? (
-                <a
-                  href={repo.homepage}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <GlobeIcon />
-                </a>
-              ) : (
-                ''
-              )}
-              <a href={repo.html_url} target='_blank' rel='noopener noreferrer'>
-                <img
-                  src={GithubLogoWhite}
-                  alt='Github Logo'
-                  className={logoStyle}
-                />
+          <img
+            src={RightArrowIcon}
+            alt='Previous Project Arrow'
+            width='55'
+            className={arrowStyle}
+            onClick={nextProject}
+          />
+        </div>
+        <div className={projectFooter}>
+          <div className={widthThird('left')}>{repo.language}</div>
+          <div className={cx(widthThird('center'), linkContainer)}>
+            {repo.homepage ? (
+              <a href={repo.homepage} target='_blank' rel='noopener noreferrer'>
+                <GlobeIcon />
               </a>
-            </div>
-            <div className={widthThird('right')}>{dateCreated}</div>
+            ) : (
+              ''
+            )}
+            <a href={repo.html_url} target='_blank' rel='noopener noreferrer'>
+              <img
+                src={GithubLogoWhite}
+                alt='Github Logo'
+                className={logoStyle}
+              />
+            </a>
           </div>
+          <div className={widthThird('right')}>{dateCreated}</div>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ import PhoneImage from './images/phone-img.png';
 import Project1Image from './images/project1.png';
 import Project2Image from './images/project2.png';
 import Project3Image from './images/project3.png';
+import ProjectsBackgroundImage from './images/projects-background.jpg';
 import SpinnerGif from './images/spinner.gif';
 
 export const breakpoints = [650, 1250, 2000];
@@ -33,5 +34,6 @@ export {
   Project1Image,
   Project2Image,
   Project3Image,
+  ProjectsBackgroundImage,
   SpinnerGif,
 };
