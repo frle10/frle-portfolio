@@ -1,8 +1,8 @@
 import React from 'react';
 import { css, cx } from 'emotion';
-import { HashLink } from 'react-router-hash-link';
 import Button from '../Button';
 import { mq } from '../../assets';
+import { anchorScroll } from '../scrollUtil';
 
 interface Props {
   sectionNumber: string;
@@ -76,9 +76,9 @@ const Section = (props: Props) => {
       </div>
       {props.children}
       <div className={buttonStyle(props.hasButton)}>
-        <HashLink smooth to='/#contact'>
+        <div onClick={anchorScroll}>
           <Button text='Hire me' />
-        </HashLink>
+        </div>
       </div>
     </div>
   );

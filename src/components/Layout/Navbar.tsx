@@ -1,9 +1,9 @@
 import React, { MouseEvent } from 'react';
+import { useWindowSize } from 'react-use';
 import { css, cx } from 'emotion';
-import { HashLink } from 'react-router-hash-link';
 import { routerStore } from '../../router/routerStore';
 import { breakpoints, mq, HamburgerIcon } from '../../assets';
-import { useWindowSize } from 'react-use';
+import { anchorScroll } from '../scrollUtil';
 
 const navbarStyle = css({
   display: 'flex',
@@ -88,10 +88,8 @@ const Navbar = () => {
         <li className={listItemStyle} onClick={() => routerStore.toProjects(1)}>
           Projects
         </li>
-        <li className={listItemStyle}>
-          <HashLink smooth to='/#contact'>
-            Contact
-          </HashLink>
+        <li className={listItemStyle} onClick={anchorScroll}>
+          Contact
         </li>
       </ul>
 

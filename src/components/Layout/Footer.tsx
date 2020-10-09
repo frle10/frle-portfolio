@@ -1,9 +1,9 @@
 import React from 'react';
+import { useWindowSize } from 'react-use';
 import { css, cx } from 'emotion';
-import { HashLink } from 'react-router-hash-link';
 import { routerStore } from '../../router/routerStore';
 import { GithubLogoBlue, InstagramLogo, breakpoints, mq } from '../../assets';
-import { useWindowSize } from 'react-use';
+import { anchorScroll } from '../scrollUtil';
 
 const footerStyle = css({
   flexShrink: 0,
@@ -92,10 +92,12 @@ const Footer = () => {
         <li className={listItemStyle} onClick={() => routerStore.toProjects(1)}>
           projects
         </li>
-        <li className={listItemStyle} style={{ paddingRight: 0 }}>
-          <HashLink smooth to='/#contact'>
-            contact
-          </HashLink>
+        <li
+          className={listItemStyle}
+          style={{ paddingRight: 0 }}
+          onClick={anchorScroll}
+        >
+          contact
         </li>
       </ul>
       <div

@@ -1,8 +1,8 @@
 import React, { MouseEvent } from 'react';
-import { routerStore } from '../../router/routerStore';
-import { HashLink } from 'react-router-hash-link';
 import { css } from 'emotion';
+import { routerStore } from '../../router/routerStore';
 import { CrossIcon } from '../../assets';
+import { anchorScroll } from '../scrollUtil';
 
 const hamStyle = css({
   position: 'absolute',
@@ -47,7 +47,7 @@ const crossStyle = css({
 });
 
 const Hamburger = () => {
-  const hideHamburger = (e?: MouseEvent) => {
+  const hideHamburger = (_e?: MouseEvent) => {
     const mobileNavListContainer = document.getElementById(
       'mobileNavListContainer'
     ) as HTMLDivElement;
@@ -84,10 +84,14 @@ const Hamburger = () => {
         >
           Projects
         </li>
-        <li className={listItemStyle} onClick={(e) => hideHamburger(e)}>
-          <HashLink smooth to='/#contact'>
-            Contact
-          </HashLink>
+        <li
+          className={listItemStyle}
+          onClick={(e) => {
+            hideHamburger(e);
+            anchorScroll(e);
+          }}
+        >
+          Contact
         </li>
       </ul>
     </div>
