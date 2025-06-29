@@ -19,16 +19,22 @@ import Icon from './Icon.astro';
 		background-color: var(--gray-999);
 		box-shadow: inset 0 0 0 1px var(--accent-overlay);
 		cursor: pointer;
+		transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+	}
+
+	button:hover {
+		transform: scale(1.1);
+		box-shadow: inset 0 0 0 1px var(--accent-regular), var(--shadow-sm);
 	}
 
 	.icon {
 		z-index: 1;
 		position: relative;
 		display: flex;
-		padding: 0.5rem;
-		width: 2rem;
-		height: 2rem;
-		font-size: 1rem;
+		padding: 0.6rem;
+		width: 2.5rem;
+		height: 2.5rem;
+		font-size: 1.25rem;
 		color: var(--accent-overlay);
 	}
 
@@ -113,7 +119,7 @@ import Icon from './Icon.astro';
   customElements.define('theme-toggle', ThemeToggle);
 
   document.addEventListener('astro:after-swap', () => {
-    const toggle = document.querySelector('theme-toggle');
+    const toggle = document.querySelector<ThemeToggle>('theme-toggle');
     if (toggle && typeof toggle.setButtonState === 'function') {
       toggle.setButtonState();
     }
