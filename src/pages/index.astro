@@ -87,13 +87,18 @@ const projects = (await getCollection('work'))
 
 				<div class="gallery">
 					<Grid variant="small">
-						{
-							['LinkedIn', 'GitHub'].map((brand) => (
-								<li class="mention-card">
-									<p>{brand}</p>
-								</li>
-							))
-						}
+						<li class="mention-card">
+							<a href="https://www.linkedin.com/in/ivan-skorupan-9ba1b118b/" target="_blank" rel="noopener noreferrer">
+									<Icon icon="linkedin-logo" size="2em" /> <h4>Connect on LinkedIn</h4>
+									<p>For professional networking and industry insights.</p>
+							</a>
+						</li>
+						<li class="mention-card">
+							<a href="https://github.com/frle10" target="_blank" rel="noopener noreferrer">
+									<Icon icon="github-logo" size="2em" /> <h4>Follow on GitHub</h4>
+									<p>To see my latest projects and contributions.</p>
+							</a>
+						</li>
 					</Grid>
 				</div>
 			</section>
@@ -112,7 +117,18 @@ const projects = (await getCollection('work'))
 	}
 
 	.roles {
-		display: none;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	@media (min-width: 50em) {
+		.roles {
+			justify-content: flex-start;
+			margin-top: 0.5rem;
+		}
 	}
 
 	.hero img {
@@ -121,7 +137,13 @@ const projects = (await getCollection('work'))
 		object-position: top;
 		border-radius: 1.5rem;
 		box-shadow: var(--shadow-md);
+		transition: all 0.3s ease-in-out;
 	}
+
+	.hero img:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-xl);
+	}	
 
 	@media (min-width: 50em) {
 		.hero {
@@ -226,7 +248,6 @@ const projects = (await getCollection('work'))
 	}
 
 	/* ====================================================== */
-
 	.mention-card {
 		display: flex;
 		height: 7rem;
@@ -246,4 +267,34 @@ const projects = (await getCollection('work'))
 			height: 9.5rem;
 		}
 	}
+
+		.mention-card a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--gray-300);
+    height: 100%;
+    transition: all 0.2s ease-out;
+}
+
+.mention-card a:hover {
+    background: var(--gradient-subtle-hover); /* Create a hover gradient */
+    transform: translateY(-5px);
+    color: var(--accent);
+}
+
+.mention-card h4 {
+    font-size: var(--text-lg);
+    margin: 0;
+}
+
+.mention-card p {
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    margin: 0;
+}
 </style>

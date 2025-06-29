@@ -1,46 +1,117 @@
 ---
 import CallToAction from './CallToAction.astro';
 import Icon from './Icon.astro';
+
+type SocialLink = {
+	href: string;
+	icon: 'github-logo' | 'linkedin-logo';
+	aria: string;
+};
+
+const socialLinks: SocialLink[] = [
+	{
+		href: 'https://www.linkedin.com/in/ivan-skorupan-9ba1b118b/',
+		icon: 'linkedin-logo',
+		aria: 'Connect with me on LinkedIn'
+	},
+  {
+    href: 'https://github.com/frle10',
+    icon: 'github-logo',
+    aria: 'View my work on GitHub'
+  },
+]
 ---
 
-<aside>
-	<h2>Interested in working together?</h2>
-	<CallToAction href="mailto:skorupan.ivan@gmail.com">
-		Send Me a Message
-		<Icon icon="paper-plane-tilt" size="1.2em" />
-	</CallToAction>
+<aside class="contact-section">
+  <div class="wrapper">
+
+    <div class="content">
+      <h2>Interested in working together?</h2>
+      <p>I’m always open to discussing new projects and opportunities. If you have something in mind, I'd love to hear from you.</p>
+    </div>
+
+    <div class="actions">
+      <CallToAction href="mailto:skorupan.ivan@gmail.com">
+        Send Me a Message
+        <Icon icon="paper-plane-tilt" size="1.2em" />
+      </CallToAction>
+    </div>
+
+    <div class="socials">
+        {socialLinks.map(link => (
+          <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.aria} class="social-link">
+            <Icon icon={link.icon} size="2em" />
+          </a>
+        ))}
+    </div>
+
+  </div>
 </aside>
 
 <style>
-	aside {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 3rem;
-		border-top: 1px solid var(--gray-800);
-		border-bottom: 1px solid var(--gray-800);
-		padding: 5rem 1.5rem;
-		background-color: var(--gray-999_40);
-		box-shadow: var(--shadow-sm);
-	}
+  .contact-section {
+    /* The full-width colored bar */
+    border-top: 1px solid var(--gray-800);
+    border-bottom: 1px solid var(--gray-800);
+    padding: 5rem 1.5rem; /* 5rem top/bottom padding, 1.5rem side padding */
+    background-color: var(--gray-999_40);
+  }
 
-	h2 {
-		font-size: var(--text-xl);
-		text-align: center;
-		max-width: 15ch;
-	}
+  .wrapper {
+    /* This is the centered container for all content */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all children horizontally */
+    gap: 2rem;
+    text-align: center;
+    max-width: 60ch; /* A comfortable reading width for mobile */
+    margin-inline: auto; /* Center the container itself */
+  }
 
-	@media (min-width: 50em) {
-		aside {
-			padding: 7.5rem;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: space-between;
-		}
+  .content {
+    display: grid;
+    gap: 1rem;
+  }
 
-		h2 {
-			font-size: var(--text-3xl);
-			text-align: left;
-		}
-	}
+  .actions {
+    margin-top: 1rem; /* Add some space above the main button */
+  }
+
+  h2 {
+    font-size: var(--text-3xl); /* Made it a bit bigger for more impact */
+  }
+
+  p {
+    color: var(--gray-300);
+    font-size: var(--text-lg);
+  }
+
+  .socials {
+    display: flex;
+    gap: 2.5rem; /* More space between social icons */
+    margin-top: 1rem;
+  }
+
+  .social-link {
+    color: var(--gray-400);
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .social-link:hover {
+    color: var(--accent-regular);
+    transform: translateY(-3px);
+  }
+
+  /* --- Desktop Layout --- */
+  @media (min-width: 50em) {
+    .wrapper {
+      /* Widen the container on larger screens */
+      max-width: 80ch;
+      gap: 2.5rem; /* Increase gap for more breathing room */
+    }
+
+    h2 {
+        font-size: var(--text-4xl);
+    }
+  }
 </style>

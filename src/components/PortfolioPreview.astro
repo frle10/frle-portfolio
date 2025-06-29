@@ -9,56 +9,123 @@ const { data, id } = Astro.props.project;
 ---
 
 <a class="card" href={`/work/${id}`}>
-	<span class="title">{data.title}</span>
-	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+  <span class="title">{data.title}</span>
+
+  <div class="details">
+    <p>{data.description}</p>
+    <div class="tags">
+      {data.tags.map((tag) => (
+        <span class="tag">{tag}</span>
+      ))}
+    </div>
+  </div>
+
+  <img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
 </a>
 
 <style>
 	.card {
-		display: grid;
-		grid-template: auto 1fr / auto 1fr;
-		height: 11rem;
-		background: var(--gradient-subtle);
-		border: 1px solid var(--gray-800);
-		border-radius: 0.75rem;
-		overflow: hidden;
-		box-shadow: var(--shadow-sm);
-		text-decoration: none;
-		font-family: var(--font-brand);
-		font-size: var(--text-lg);
-		font-weight: 500;
-		transition: box-shadow var(--theme-transition);
-	}
+    display: grid;
+    grid-template: auto 1fr / auto 1fr;
+    height: 11rem;
+    background: var(--gradient-subtle);
+    border: 1px solid var(--gray-800);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition: box-shadow var(--theme-transition);
+  }
 
-	.card:hover {
-		box-shadow: var(--shadow-md);
-	}
+  .card:hover {
+    box-shadow: var(--shadow-xl);
+  }
 
-	.title {
-		grid-area: 1 / 1 / 2 / 2;
-		z-index: 1;
-		margin: 0.5rem;
-		padding: 0.5rem 1rem;
-		background: var(--gray-999);
-		color: var(--gray-200);
-		border-radius: 0.375rem;
-	}
+  .card:hover img {
+    filter: brightness(0.6);
+    transform: scale(1.05);
+  }
 
-	img {
-		grid-area: 1 / 1 / 3 / 3;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
+  .title {
+    grid-area: 1 / 1 / 2 / 2;
+    align-self: start;
+    z-index: 3;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--gray-999);
+    color: var(--gray-200);
+    border-radius: 0.375rem;
+    font-family: var(--font-brand);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    transition: transform 0.3s ease-out;
+  }
 
-	@media (min-width: 50em) {
-		.card {
-			height: 22rem;
-			border-radius: 1.5rem;
-		}
+  .card:hover .title {
+    transform: translateY(-0.25rem);
+  }
 
-		.title {
-			border-radius: 0.9375rem;
-		}
-	}
+  img {
+    grid-area: 1 / 1 / 3 / 3;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease-out, transform 0.4s ease-out;
+  }
+
+  /* --- Details Reveal Styles --- */
+  .details {
+    grid-area: 1 / 1 / 3 / 3;
+    z-index: 2;
+    align-self: end;
+    padding: 1rem;
+    color: var(--gray-200);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+  .card:hover .details {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .details p {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    margin-bottom: 0.75rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--gray-100);
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+  }
+
+
+  @media (min-width: 50em) {
+    .card {
+      height: 22rem;
+      border-radius: 1.5rem;
+    }
+
+    .title {
+      border-radius: 0.9375rem;
+    }
+
+    .details p {
+        font-size: var(--text-lg);
+    }
+  }
 </style>

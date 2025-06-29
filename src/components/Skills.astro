@@ -1,64 +1,158 @@
 ---
 import Icon from './Icon.astro';
+
+type SkillData = {
+	icon: 'terminal-window' | 'trophy' | 'heart';
+	title: string;
+	description: string;
+	tools: string[];
+};
+
+const skillsData: SkillData[] = [
+  {
+    icon: 'terminal-window',
+    title: 'Engineering<br>Depth',
+    description: 'From frontend polish to backend architecture — I’ve built across the stack with care, speed, and purpose.',
+    tools: ['TypeScript', 'React', 'Node.js', 'Python', 'Go', 'PostgreSQL', 'Docker', 'AWS'],
+  },
+  {
+    icon: 'trophy',
+    title: 'Technical<br>Leadership',
+    description: 'I’ve mentored devs, shaped roadmaps, and scaled processes in fast-moving teams that tripled in size.',
+    tools: ['Agile/Scrum', 'System Design', 'Code Reviews', 'CI/CD', 'Jira', 'Observability'],
+  },
+  {
+    icon: 'heart',
+    title: 'Human-Centered<br>Design',
+    description: 'I care about clarity — in interfaces, teams, and strategy. Good systems should feel calm and clear.',
+    tools: ['Figma', 'Storybook', 'WCAG Accessibility', 'User Testing', 'Design Systems'],
+  },
+];
 ---
 
-<section class="box skills">
-	<div class="stack gap-2 lg:gap-4">
-		<Icon icon="terminal-window" color="var(--accent-regular)" size="2.5rem" gradient />
-		<h2>Engineering<br>Depth</h2>
-		<p>From frontend polish to backend architecture — I’ve built across the stack with care, speed, and purpose.</p>
-	</div>
+<section class="skills-grid">
+  {
+    skillsData.map((skill) => (
+      <div class="skill-card">
+        <div class="card-content">
+          <div class="front">
+            <div class="icon-wrapper">
+              <Icon icon={skill.icon} color="var(--accent-regular)" size="2.5rem" gradient />
+            </div>
+            <h2 set:html={skill.title} />
+            <p>{skill.description}</p>
+          </div>
 
-	<div class="stack gap-2 lg:gap-4">
-		<Icon icon="trophy" color="var(--accent-regular)" size="2.5rem" gradient />
-		<h2>Technical Leadership</h2>
-		<p>I’ve mentored devs, shaped roadmaps, and scaled processes in fast-moving teams that tripled in size.</p>
-	</div>
-
-	<div class="stack gap-2 lg:gap-4">
-		<Icon icon="heart" color="var(--accent-regular)" size="2.5rem" gradient />
-		<h2>Human-Centered Design</h2>
-		<p>I care about clarity — in interfaces, teams, and strategy. Good systems should feel calm and clear.</p>
-	</div>
+          <div class="back">
+            <h2 set:html={skill.title} />
+            <ul class="tech-list" role="list">
+              {skill.tools.map((tool) => (
+                <li>{tool}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    ))
+  }
 </section>
 
 <style>
-	.box {
-		border: 1px solid var(--gray-800);
-		border-radius: 0.75rem;
-		padding: 1.5rem;
-		background-color: var(--gray-999_40);
-		box-shadow: var(--shadow-sm);
-	}
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 
-	.skills {
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
-	}
+  .skill-card {
+    position: relative;
+    border: 1px solid var(--gray-800);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    background-color: var(--gray-999_40);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-out, transform 0.3s ease-out;
+  }
 
-	.skills h2 {
-		font-size: var(--text-lg);
-	}
+  .skill-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
 
-	.skills p {
-		color: var(--gray-400);
-	}
+  .card-content {
+    position: relative;
+    transition: transform 0.4s ease-out;
+  }
 
-	@media (min-width: 50em) {
-		.box {
-			border-radius: 1.5rem;
-			padding: 2.5rem;
-		}
+  .front,
+  .back {
+    display: grid;
+    gap: 1rem;
+    transition: opacity 0.4s ease-out, visibility 0.4s;
+    backface-visibility: hidden;
+  }
 
-		.skills {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 5rem;
-		}
+  .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
 
-		.skills h2 {
-			font-size: var(--text-2xl);
-		}
-	}
+  .skill-card:hover .front {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .skill-card:hover .back {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .icon-wrapper {
+    transition: transform 0.3s ease-out;
+  }
+
+  .skill-card:hover .icon-wrapper {
+    transform: scale(1.1);
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+    line-height: 1.1;
+  }
+
+  p {
+    color: var(--gray-400);
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+		list-style: none;
+  }
+
+  .tech-list li {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--gray-300);
+    background-color: var(--gray-800);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+  }
+
+  @media (min-width: 50em) {
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
 </style>
