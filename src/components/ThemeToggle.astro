@@ -68,28 +68,54 @@ import Icon from './Icon.astro';
 </style>
 
 <script>
-	class ThemeToggle extends HTMLElement {
-		constructor() {
-			super();
+  const applyTheme = () => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('theme-dark');
+    } else {
+      document.documentElement.classList.remove('theme-dark');
+    }
+  };
 
-			const button = this.querySelector('button')!;
+  applyTheme();
+  document.addEventListener('astro:after-swap', applyTheme);
 
-			/** Set the theme to dark/light mode. */
-			const setTheme = (dark: boolean) => {
-				document.documentElement.classList[dark ? 'add' : 'remove']('theme-dark');
-				button.setAttribute('aria-pressed', String(dark));
-			};
+  class ThemeToggle extends HTMLElement {
+    constructor() {
+      super();
 
-			// Toggle the theme when a user clicks the button.
-			button.addEventListener('click', () => setTheme(!this.isDark()));
+      const button = this.querySelector('button');
+      if (!button) return;
 
-			// Initialize button state to reflect current theme.
-			setTheme(this.isDark());
-		}
+      this.setButtonState();
 
-		isDark() {
-			return document.documentElement.classList.contains('theme-dark');
-		}
-	}
-	customElements.define('theme-toggle', ThemeToggle);
+      button.addEventListener('click', () => {
+        const isDark = this.isDark();
+        const newTheme = isDark ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        button.setAttribute('aria-pressed', String(!isDark));
+        applyTheme();
+      });
+    }
+
+    isDark() {
+      return localStorage.getItem('theme') === 'dark';
+    }
+
+    setButtonState() {
+      const button = this.querySelector('button');
+      if (button) {
+        button.setAttribute('aria-pressed', String(this.isDark()));
+      }
+    }
+  }
+
+  customElements.define('theme-toggle', ThemeToggle);
+
+  document.addEventListener('astro:after-swap', () => {
+    const toggle = document.querySelector('theme-toggle');
+    if (toggle && typeof toggle.setButtonState === 'function') {
+      toggle.setButtonState();
+    }
+  });
 </script>
