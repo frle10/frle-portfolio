@@ -16,13 +16,20 @@
 		font-size: var(--text-md);
 		line-height: 1.35;
 		white-space: nowrap;
+		box-shadow: var(--shadow-sm);
+		transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 	}
+
+	.pill:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-md);
+  }
 
 	@media (min-width: 50em) {
     .pill {
-      width: auto; /* Revert to natural, content-based width */
-      justify-content: flex-start; /* Align content to the left */
-      padding: 0.5rem 1rem; /* Revert to original padding */
+      width: auto;
+      justify-content: flex-start;
+      padding: 0.5rem 1rem;
     }
   }
 </style>
