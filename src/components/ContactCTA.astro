@@ -4,7 +4,7 @@ import Icon from './Icon.astro';
 
 type SocialLink = {
 	href: string;
-	icon: 'github-logo' | 'linkedin-logo';
+	icon: 'github-logo' | 'linkedin-logo' | 'youtube-logo';
 	aria: string;
 };
 
@@ -18,6 +18,11 @@ const socialLinks: SocialLink[] = [
     href: 'https://github.com/frle10',
     icon: 'github-logo',
     aria: 'View my work on GitHub'
+  },
+  {
+    href: 'https://www.youtube.com/@Frlee',
+    icon: 'youtube-logo',
+    aria: 'Subscribe to my YouTube channel'
   },
 ]
 ---
