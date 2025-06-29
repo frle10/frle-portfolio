@@ -20,18 +20,9 @@ const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[]
 /** Test if a link is pointing to the current page. */
 const isCurrentPage = (href: string) => {
   const currentPathname = Astro.url.pathname;
-
-  // Exact match for the homepage
-  if (href === '/') {
-    return currentPathname === '/';
-  }
-
-  // For other links, check if the current path starts with the link's href.
-  // This makes sure /work/project-slug highlights the /work/ link.
-  // The trailing slash is removed from the currentPathname to ensure a clean match.
+  if (href === '/') return currentPathname === '/';
   const formattedPathname = currentPathname.endsWith('/') ? currentPathname.slice(0, -1) : currentPathname;
   const formattedHref = href.endsWith('/') ? href.slice(0, -1) : href;
-
   return formattedPathname.startsWith(formattedHref);
 };
 ---
@@ -40,7 +31,7 @@ const isCurrentPage = (href: string) => {
   <div class="menu-header">
     <a href="/" class="site-title">
       <Icon icon="head-circuit" color="var(--accent-regular)" size="1.6em" gradient />
-      Ivan Skorupan
+      <span class="site-title-text">Ivan Skorupan</span>
     </a>
     <menu-button>
       <template>
@@ -101,32 +92,26 @@ const isCurrentPage = (href: string) => {
 
       if (!btn || !menu) return;
       
-      // Initially hide menu & add class for JS-only styles
       menu.hidden = true;
       menu.classList.add('menu-content');
 
-      // This is the simplified, reliable function to open/close the menu
       const setExpanded = (isExpanded: boolean) => {
         btn.setAttribute('aria-expanded', String(isExpanded));
         menu.hidden = !isExpanded;
       };
 
-      // When the button is clicked, toggle the state
       btn.addEventListener('click', () => {
         const isExpanded = btn.getAttribute('aria-expanded') === 'true';
         setExpanded(!isExpanded);
       });
 
-      // Handle window resizing
       const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
         const isMobile = e.matches;
         btn.hidden = !isMobile;
-        // On desktop, the menu is not handled by this script
-        // On mobile, ensure it's closed on load
         if (isMobile) {
           setExpanded(false);
         } else {
-          setExpanded(true); // Effectively hides the dropdown on desktop
+          setExpanded(true);
         }
       };
       
@@ -139,13 +124,20 @@ const isCurrentPage = (href: string) => {
 </script>
 
 <style>
-  /* --- Base Mobile Styles --- */
+  /* --- Base Styles for All Screen Sizes --- */
   nav {
     font-family: var(--font-brand);
     font-weight: 500;
     margin-bottom: 3.5rem;
-    position: relative;
+
+    /* Make nav sticky and glassy on ALL screen sizes */
+    position: sticky;
+    top: 0;
     z-index: 9990;
+    width: 100%;
+    background-color: hsla(var(--gray-999-basis), 0.5);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--gray-800);
   }
 
   .menu-header {
@@ -154,8 +146,9 @@ const isCurrentPage = (href: string) => {
     align-items: center;
     gap: 0.5rem;
     padding: 1.5rem;
-    background-color: var(--gray-999);
-    border-bottom: 1px solid var(--gray-800);
+    /* The header is now transparent, as the nav behind it has the glass effect */
+    background-color: transparent; 
+    border-bottom: none;
     position: relative;
     z-index: 20;
   }
@@ -194,7 +187,6 @@ const isCurrentPage = (href: string) => {
     display: none;
   }
 
-  /* Animated Hamburger Icon */
   .menu-button .icon-menu,
   .menu-button .icon-close {
     position: absolute;
@@ -203,25 +195,16 @@ const isCurrentPage = (href: string) => {
     transform: translate(-50%, -50%);
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .menu-button .icon-close {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-90deg);
-  }
-  .menu-button[aria-expanded='true'] .icon-menu {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(90deg);
-  }
-  .menu-button[aria-expanded='true'] .icon-close {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
+  .menu-button .icon-close { opacity: 0; transform: translate(-50%, -50%) rotate(-90deg); }
+  .menu-button[aria-expanded='true'] .icon-menu { opacity: 0; transform: translate(-50%, -50%) rotate(90deg); }
+  .menu-button[aria-expanded='true'] .icon-close { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
 
-  /* This is the dropdown panel */
   .menu-content {
     position: absolute;
     left: 0;
     right: 0;
     z-index: 10;
+    /* The dropdown needs a solid background to be readable */
     background-color: var(--gray-999);
     border-bottom: 1px solid var(--gray-800);
     border-radius: 0 0 0.75rem 0.75rem;
@@ -229,22 +212,20 @@ const isCurrentPage = (href: string) => {
   }
 
   .nav-items {
-    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     font-size: var(--text-md);
     list-style: none;
     padding: 2rem;
+    margin: 0;
   }
   .link {
     display: inline-block;
     color: var(--gray-300);
     text-decoration: none;
   }
-  .link[aria-current='page'] {
-    color: var(--gray-0);
-  }
+  .link[aria-current='page'] { color: var(--gray-0); }
   .menu-footer {
     display: flex;
     justify-content: space-between;
@@ -258,21 +239,11 @@ const isCurrentPage = (href: string) => {
     flex-wrap: wrap;
     gap: 1rem;
   }
-  .social {
-    display: flex;
-    color: var(--accent-dark);
-  }
+  .social { display: flex; color: var(--accent-dark); }
 
-  /* --- Desktop Styles (Sticky Glass Header) --- */
+  /* --- Desktop Styles --- */
   @media (min-width: 62em) {
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 9999;
-      width: 100%;
-      background-color: hsla(var(--gray-999-basis), 0.5);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--gray-800);
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
@@ -280,15 +251,9 @@ const isCurrentPage = (href: string) => {
       gap: 1rem;
     }
 
-    .menu-header {
-      padding: 0;
-      border: 0;
-      background-color: transparent;
-    }
+    .menu-header { padding: 0; }
 
-    .menu-content {
-      display: contents;
-    }
+    .menu-content { display: contents; }
 
     .nav-items {
       position: relative;
