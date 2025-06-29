@@ -133,7 +133,7 @@
 html,
 body {
   min-height: 100%;
-  /* overflow-x: hidden; */
+  overflow-x: clip;
 }
 
 body {
