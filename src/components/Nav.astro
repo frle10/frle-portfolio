@@ -39,7 +39,7 @@ const isCurrentPage = (href: string) => {
 <nav>
   <div class="menu-header">
     <a href="/" class="site-title">
-      <Icon icon="terminal-window" color="var(--accent-regular)" size="1.6em" gradient />
+      <Icon icon="head-circuit" color="var(--accent-regular)" size="1.6em" gradient />
       Ivan Skorupan
     </a>
     <menu-button>
@@ -130,7 +130,7 @@ const isCurrentPage = (href: string) => {
         }
       };
       
-      const mediaQueries = window.matchMedia('(max-width: 49.99em)');
+      const mediaQueries = window.matchMedia('(max-width: 61.99em)');
       handleViewports(mediaQueries);
       mediaQueries.addEventListener('change', handleViewports);
     }
@@ -264,7 +264,7 @@ const isCurrentPage = (href: string) => {
   }
 
   /* --- Desktop Styles (Sticky Glass Header) --- */
-  @media (min-width: 50em) {
+  @media (min-width: 62em) {
     nav {
       position: sticky;
       top: 0;
@@ -287,7 +287,7 @@ const isCurrentPage = (href: string) => {
     }
 
     .menu-content {
-      display: contents; /* Allows menu items to become direct grid children */
+      display: contents;
     }
 
     .nav-items {
