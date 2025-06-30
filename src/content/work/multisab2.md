@@ -1,7 +1,7 @@
 ---
 title: 'MULTISAB2: Brain Signal Analysis Platform'
 publishDate: 2024-02-20 00:00:00
-img: /assets/stock-4.jpg
+img: /assets/multisab2.png
 img_alt: An abstract visualization of brainwave patterns and neural networks.
 description: |
   A high-performance data analysis platform designed to process, analyze, and visualize complex EEG brain signals using advanced machine learning and signal processing pipelines.

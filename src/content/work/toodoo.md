@@ -1,7 +1,7 @@
 ---
 title: Toodoo – My First Published App
 publishDate: 2019-08-10 00:00:00
-img: /assets/stock-3.jpg
+img: /assets/too-doo.png
 img_alt: Screenshot of the Toodoo app interface with tasks and categories
 description: |
   A clean and simple to-do list app built entirely from scratch — my first live product as a junior developer.

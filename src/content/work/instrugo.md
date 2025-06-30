@@ -1,7 +1,7 @@
 ---
 title: InstruGo – Connecting Students & Instructors
 publishDate: 2022-05-30 00:00:00
-img: /assets/stock-1.jpg
+img: /assets/instrugo.png
 img_alt: Interface of the InstruGo platform showing profiles and a booking flow
 description: |
   A full stack web platform that helps students at any level — from elementary to university — find, contact, and book private instructors.

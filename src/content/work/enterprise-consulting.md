@@ -1,7 +1,7 @@
 ---
 title: Enterprise Platform Modernization & Consulting
 publishDate: 2022-11-20 00:00:00
-img: /assets/stock-4.jpg
+img: /assets/enterprise-consulting.png
 img_alt: A diagram showing a complex cloud architecture, representing enterprise system design.
 description: |
   Guiding enterprise clients through complex digital transformations by designing scalable, cloud-native architectures and providing strategic technical leadership.

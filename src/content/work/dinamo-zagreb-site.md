@@ -1,7 +1,7 @@
 ---
 title: KK Dinamo Zagreb – Official Club Website
 publishDate: 2023-05-15 00:00:00
-img: /assets/stock-2.jpg
+img: /assets/kk-dinamo-zagreb.jpg
 img_alt: Homepage of the KK Dinamo Zagreb website featuring players and blog highlights
 description: |
   A fully custom backend and CMS built for the professional basketball club KK Dinamo Zagreb — enabling seamless management of players, coaches, and club content.
