@@ -1,6 +1,6 @@
-/* Global variables */
+/* --- DEFAULT LIGHT THEME --- */
 :root {
-  /* Colors */
+  /* Neutral Colors (Light Mode) */
   --gray-0: #090b11;
   --gray-50: #141925;
   --gray-100: #283044;
@@ -16,14 +16,16 @@
   --gray-999_40: hsla(var(--gray-999-basis), 0.4);
   --gray-999: #ffffff;
 
-  --accent-light: #c561f6;
-  --accent-regular: #7611a6;
-  --accent-dark: #1c0056;
-  --accent-overlay: hsla(280, 89%, 67%, 0.33);
-  --accent-subtle-overlay: var(--accent-overlay);
-  --accent-text-over: var(--gray-999);
+  /* Accent Colors (Light Mode) - Darker tones for contrast on a light background */
+  --accent-light: hsl(45, 95%, 55%);
+  --accent-regular: hsl(42, 95%, 50%);
+  --accent-regular-basis: 42, 95%, 50%;
+  --accent-dark: hsl(38, 95%, 40%);
+  --accent-overlay: hsla(42, 95%, 50%, 0.1);
+  --accent-subtle-overlay: hsla(42, 95%, 50%, 0.15);
+  --accent-text-over: var(--gray-0); /* High-contrast dark text for buttons */
 
-  --link-color: var(--accent-regular);
+  --link-color: var(--accent-dark);
 
   /* Gradients */
   --gradient-stop-1: var(--accent-light);
@@ -42,9 +44,8 @@
   );
   --gradient-accent-orange: linear-gradient(
     150deg,
-    #ca7879,
-    var(--accent-regular),
-    var(--accent-dark)
+    var(--gradient-stop-1),
+    var(--accent-regular)
   );
   --gradient-stroke: linear-gradient(180deg, var(--gray-900), var(--gray-700));
 
@@ -80,7 +81,9 @@
   --theme-transition: 0.2s ease-in-out;
 }
 
+/* --- DARK THEME OVERRIDES --- */
 :root.theme-dark {
+  /* Neutral Colors (Dark Mode) */
   --gray-0: #ffffff;
   --gray-50: #f3f4f7;
   --gray-100: #e3e6ee;
@@ -95,39 +98,18 @@
   --gray-999-basis: 225, 31%, 5%;
   --gray-999: #090b11;
 
-  --accent-light: #1c0056;
-  --accent-regular: #7611a6;
-  --accent-dark: #c561f6;
-  --accent-overlay: hsla(280, 89%, 67%, 0.33);
-  --accent-subtle-overlay: hsla(281, 81%, 36%, 0.33);
-  --accent-text-over: var(--gray-0);
+  /* Accent Colors (Dark Mode) - Brighter tones to pop on a dark background */
+  --accent-light: hsl(45, 100%, 70%);
+  --accent-regular: hsl(38, 95%, 50%);
+  --accent-regular-basis: 42, 95%, 58%;
+  --accent-dark: hsl(38, 90%, 50%);
+  --accent-overlay: hsla(42, 95%, 58%, 0.2);
+  --accent-subtle-overlay: hsla(42, 95%, 58%, 0.1);
+  --accent-text-over: var(--gray-0); /* High-contrast light text for buttons */
 
-  --link-color: var(--accent-dark);
+  --link-color: var(--accent-light);
 
-  --gradient-stop-1: #4c11c6;
-  --gradient-subtle: linear-gradient(
-    150deg,
-    var(--gray-900) 19%,
-    var(--gray-999) 81%
-  );
-  --gradient-accent-orange: linear-gradient(
-    150deg,
-    #ca7879,
-    var(--accent-regular),
-    var(--accent-light)
-  );
   --gradient-stroke: linear-gradient(180deg, var(--gray-600), var(--gray-800));
-
-  --shadow-sm: 0px 6px 3px rgba(255, 255, 255, 0.01),
-    0px 4px 2px rgba(255, 255, 255, 0.01), 0px 2px 2px rgba(255, 255, 255, 0.02),
-    0px 0px 1px rgba(255, 255, 255, 0.03);
-  --shadow-md: 0px 28px 11px rgba(255, 255, 255, 0.01),
-    0px 16px 10px rgba(255, 255, 255, 0.03),
-    0px 7px 7px rgba(255, 255, 255, 0.05), 0px 2px 4px rgba(255, 255, 255, 0.06);
-  --shadow-lg: 0px 62px 25px rgba(255, 255, 255, 0.01),
-    0px 35px 21px rgba(255, 255, 255, 0.05),
-    0px 16px 16px rgba(255, 255, 255, 0.1),
-    0px 4px 9px rgba(255, 255, 255, 0.12);
 }
 
 html,
@@ -174,19 +156,15 @@ h5 {
 h1 {
   font-size: var(--text-5xl);
 }
-
 h2 {
   font-size: var(--text-4xl);
 }
-
 h3 {
   font-size: var(--text-3xl);
 }
-
 h4 {
   font-size: var(--text-2xl);
 }
-
 h5 {
   font-size: var(--text-xl);
 }
