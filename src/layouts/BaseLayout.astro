@@ -35,17 +35,20 @@ const { title, description } = Astro.props;
 			:root {
 				--_placeholder-bg: linear-gradient(transparent, transparent);
 
-				/* --- NEW: Sophisticated, Multi-Layered Gradients for Dark Mode --- */
-				/* This creates a sharp "swoosh" on the top left and a soft glow on the right */
+				/* --- Dark Mode Gradients with Increased Radiance --- */
 				--gradient-main-glow:
-					radial-gradient(ellipse 50% 100% at 0% 100%, hsla(var(--accent-regular-basis), 0.4), transparent 50%),
-					radial-gradient(ellipse 50% 50% at 100% 0%, hsla(var(--accent-regular-basis), 0.3), transparent 70%);
+					/* Increased opacity from 0.35 to 0.45 */
+					radial-gradient(ellipse 10% 50% at 5% 20%, hsla(var(--accent-regular-basis), 0.35), transparent),
+					/* Increased opacity from 0.25 to 0.35 */
+					radial-gradient(ellipse 10% 50% at 95% 20%, hsla(var(--accent-regular-basis), 0.35), transparent),
+					/* Increased opacity from 0.2 to 0.25 */
+					radial-gradient(ellipse 80% 60% at 50% 50%, hsla(var(--accent-regular-basis), 0.35), transparent);
 
-				/* A simple glow from the bottom for other sections */
 				--gradient-subtle-glow: 
-					radial-gradient(ellipse 100% 60% at 50% 110%, hsla(var(--accent-regular-basis), 0.15), transparent);
+					/* Increased opacity from 0.15 to 0.25 */
+					radial-gradient(ellipse 100% 60% at 50% 110%, hsla(var(--accent-regular-basis), 0.25), transparent);
 
-				/* --- Light Mode Gradients (Kept simpler) --- */
+				/* --- Light Mode Gradients (Unchanged) --- */
 				--gradient-main-glow-light: 
 					radial-gradient(ellipse 60% 50% at 50% 50%, hsla(var(--accent-regular-basis), 0.3), transparent 70%);
 				--gradient-subtle-glow-light: 
