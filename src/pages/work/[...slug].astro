@@ -38,7 +38,15 @@ const { Content } = await render(entry);
     <main class="wrapper">
       <div class="project-layout">
         <div class="prose">
-          {entry.data.img && <img src={entry.data.img} alt={entry.data.img_alt || ''} />}
+          {entry.data.img && (
+            entry.data.liveUrl ? (
+              <a href={entry.data.liveUrl} target="_blank" rel="noopener noreferrer" class="image-link">
+                <img src={entry.data.img} alt={entry.data.img_alt || ''} />
+              </a>
+            ) : (
+              <img src={entry.data.img} alt={entry.data.img_alt || ''} class="image-link" />
+            )
+          )}
           <Content />
         </div>
 
@@ -104,7 +112,6 @@ const { Content } = await render(entry);
     max-width: 54ch;
   }
 
-  /* --- Main Content Area --- */
   .prose {
     max-width: 65ch;
   }
@@ -116,24 +123,21 @@ const { Content } = await render(entry);
     border: 1px solid var(--gray-800);
   }
   
-  /* --- NEW: Refined Typography for Prose --- */
   .prose :global(h2) {
-    font-size: var(--text-2xl); /* Make <h2> smaller */
+    font-size: var(--text-2xl);
     margin: 2.5rem 0 1.5rem;
-    border-top: 1px solid var(--gray-800); /* Add a separator line */
+    border-top: 1px solid var(--gray-800);
     padding-top: 2.5rem;
   }
 
   .prose :global(h3) {
-    font-size: var(--text-xl); /* Make <h3> smaller */
+    font-size: var(--text-xl);
     margin: 2rem 0 1rem;
     padding-left: 1.25rem;
-    /* Add a decorative accent border */
     border-left: 4px solid var(--accent-regular);
   }
 
   .prose :global(h3 + p) {
-    /* Add a subtle style to the paragraph immediately after a capability title */
     color: var(--gray-300);
   }
   
@@ -147,12 +151,12 @@ const { Content } = await render(entry);
     color: var(--gray-0);
   }
 
-  /* --- Meta Sidebar (Unchanged) --- */
   .meta-sidebar {
     border-top: 1px solid var(--gray-800);
     padding-top: 2rem;
     margin-top: 3rem;
   }
+
   .meta-group {
     display: flex;
     flex-direction: column;
@@ -161,6 +165,7 @@ const { Content } = await render(entry);
   .meta-group + .meta-group {
     margin-top: 1.5rem;
   }
+
   .meta-title {
     font-size: var(--text-sm);
     font-family: var(--font-body);
@@ -169,16 +174,36 @@ const { Content } = await render(entry);
     letter-spacing: 0.05em;
     color: var(--gray-400);
   }
+
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
+  
   .links {
     gap: 1rem;
   }
 
-  /* --- Desktop Layout (Unchanged) --- */
+  .image-link {
+  display: block;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-800);
+}
+
+  .image-link img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease-out;
+  }
+
+  .image-link:hover img {
+    transform: scale(1.05);
+  }
+
   @media (min-width: 62em) {
     .project-layout {
       display: grid;
