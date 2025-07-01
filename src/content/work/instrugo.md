@@ -11,11 +11,11 @@ tags:
   - React
   - Node.js
 
-role: 'Lead Engineer'
-client: 'eSTUDENT LUMEN Development Board'
+role: Lead Engineer
+client: eSTUDENT LUMEN Development Board
 year: '2022'
-liveUrl: 'https://instrugo.frle.dev/'
-repoUrl: 'https://github.com/InstruGo'
+liveUrl: https://instrugo.frle.dev/
+repoUrl: https://github.com/InstruGo
 ---
 
 ## The Idea

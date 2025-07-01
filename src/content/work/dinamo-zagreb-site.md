@@ -11,11 +11,11 @@ tags:
   - NestJS
   - PostgreSQL
 
-role: 'Lead Engineer & Architect'
-client: 'Basketball Club Dinamo Zagreb'
+role: Lead Engineer & Architect
+client: Basketball Club Dinamo Zagreb
 year: '2019-2020'
-liveUrl: 'https://kkdinamo.hr/'
-repoUrl: 'https://github.com/frle10/kk-dinamo-webapp-backend'
+liveUrl: https://kkdinamo.hr/
+repoUrl: https://github.com/frle10/kk-dinamo-webapp-backend
 ---
 
 ## Project Overview

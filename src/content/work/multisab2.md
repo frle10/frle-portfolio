@@ -12,11 +12,11 @@ tags:
   - Neuroscience
   - Data Visualization
 
-role: 'Lead Engineer'
-client: 'Master's Thesis Board'
+role: Lead Engineer
+client: Master's Thesis Board
 year: '2022'
-liveUrl: 'https://multisab2.frle.dev/'
-repoUrl: 'https://github.com/scorphio-engineering'
+liveUrl: https://multisab2.frle.dev/
+repoUrl: https://github.com/scorphio-engineering
 ---
 
 ## Project Overview

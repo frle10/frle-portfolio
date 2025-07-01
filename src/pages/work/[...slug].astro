@@ -8,7 +8,6 @@ import Hero from '../../components/Hero.astro';
 import Icon from '../../components/Icon.astro';
 import Pill from '../../components/Pill.astro';
 import Button from '../../components/Button.astro';
-import CallToAction from '../../components/CallToAction.astro';
 
 export async function getStaticPaths() {
   const work = await getCollection('work');
@@ -105,16 +104,39 @@ const { Content } = await render(entry);
     max-width: 54ch;
   }
 
+  /* --- Main Content Area --- */
   .prose {
     max-width: 65ch;
   }
   .prose > :global(* + *) { margin-top: 1.5rem; }
-  .prose :global(h1), .prose :global(h2), .prose :global(h3) { margin: 2rem 0 1rem; }
+  
   .prose :global(img) {
     border-radius: 1.5rem;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--gray-800);
   }
+  
+  /* --- NEW: Refined Typography for Prose --- */
+  .prose :global(h2) {
+    font-size: var(--text-2xl); /* Make <h2> smaller */
+    margin: 2.5rem 0 1.5rem;
+    border-top: 1px solid var(--gray-800); /* Add a separator line */
+    padding-top: 2.5rem;
+  }
+
+  .prose :global(h3) {
+    font-size: var(--text-xl); /* Make <h3> smaller */
+    margin: 2rem 0 1rem;
+    padding-left: 1.25rem;
+    /* Add a decorative accent border */
+    border-left: 4px solid var(--accent-regular);
+  }
+
+  .prose :global(h3 + p) {
+    /* Add a subtle style to the paragraph immediately after a capability title */
+    color: var(--gray-300);
+  }
+  
   .prose :global(blockquote) {
     font-size: var(--text-lg);
     font-family: var(--font-brand);
@@ -125,12 +147,12 @@ const { Content } = await render(entry);
     color: var(--gray-0);
   }
 
+  /* --- Meta Sidebar (Unchanged) --- */
   .meta-sidebar {
     border-top: 1px solid var(--gray-800);
     padding-top: 2rem;
     margin-top: 3rem;
   }
-
   .meta-group {
     display: flex;
     flex-direction: column;
@@ -139,7 +161,6 @@ const { Content } = await render(entry);
   .meta-group + .meta-group {
     margin-top: 1.5rem;
   }
-
   .meta-title {
     font-size: var(--text-sm);
     font-family: var(--font-body);
@@ -148,17 +169,16 @@ const { Content } = await render(entry);
     letter-spacing: 0.05em;
     color: var(--gray-400);
   }
-
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-
   .links {
     gap: 1rem;
   }
 
+  /* --- Desktop Layout (Unchanged) --- */
   @media (min-width: 62em) {
     .project-layout {
       display: grid;

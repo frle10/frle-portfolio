@@ -11,11 +11,11 @@ tags:
   - UI/UX
   - Vanilla JS
 
-role: 'Full Stack Engineer'
-client: 'Ars Futura Interviewers'
+role: Full Stack Engineer
+client: Ars Futura Interviewers
 year: '2020'
-liveUrl: 'https://toodoo.frle.dev/'
-repoUrl: 'https://github.com/frle10/too-doo-frontend'
+liveUrl: https://toodoo.frle.dev/
+repoUrl: https://github.com/frle10/too-doo-frontend
 ---
 
 ## Project Overview
