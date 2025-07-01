@@ -2,29 +2,32 @@
 import Icon from './Icon.astro';
 
 type SkillData = {
-	icon: 'terminal-window' | 'trophy' | 'heart';
-	title: string;
-	description: string;
-	tools: string[];
+  icon: 'terminal-window' | 'trophy' | 'heart';
+  title: string;
+  description: string;
+  tools: string[];
 };
 
 const skillsData: SkillData[] = [
   {
     icon: 'terminal-window',
     title: 'Engineering<br>Depth',
-    description: 'From frontend polish to backend architecture — I’ve built across the stack with care, speed, and purpose.',
+    description:
+      'From frontend polish to backend architecture — I’ve built across the stack with care, speed, and purpose.',
     tools: ['TypeScript', 'React', 'Node.js', 'Python', 'Go', 'PostgreSQL', 'Docker', 'AWS'],
   },
   {
     icon: 'trophy',
     title: 'Technical<br>Leadership',
-    description: 'I’ve mentored devs, shaped roadmaps, and scaled processes in fast-moving teams that tripled in size.',
+    description:
+      'I’ve mentored devs, shaped roadmaps, and scaled processes in fast-moving teams that tripled in size.',
     tools: ['Agile/Scrum', 'System Design', 'Code Reviews', 'CI/CD', 'Jira', 'Observability'],
   },
   {
     icon: 'heart',
     title: 'Human-Centered<br>Design',
-    description: 'I care about clarity — in interfaces, teams, and strategy. Good systems should feel calm and clear.',
+    description:
+      'I care about clarity — in interfaces, teams, and strategy. Good systems should feel calm and clear.',
     tools: ['Figma', 'Storybook', 'WCAG Accessibility', 'User Testing', 'Design Systems'],
   },
 ];
@@ -32,7 +35,7 @@ const skillsData: SkillData[] = [
 
 <section class="skills-grid">
   {
-    skillsData.map((skill) => (
+    skillsData.map(skill => (
       <div class="skill-card">
         <div class="card-content">
           <div class="front">
@@ -46,7 +49,7 @@ const skillsData: SkillData[] = [
           <div class="back">
             <h2 set:html={skill.title} />
             <ul class="tech-list" role="list">
-              {skill.tools.map((tool) => (
+              {skill.tools.map(tool => (
                 <li>{tool}</li>
               ))}
             </ul>
@@ -72,7 +75,9 @@ const skillsData: SkillData[] = [
     background-color: var(--gray-999_40);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
-    transition: box-shadow 0.3s ease-out, transform 0.3s ease-out;
+    transition:
+      box-shadow 0.3s ease-out,
+      transform 0.3s ease-out;
   }
 
   .skill-card:hover {
@@ -89,7 +94,9 @@ const skillsData: SkillData[] = [
   .back {
     display: grid;
     gap: 1rem;
-    transition: opacity 0.4s ease-out, visibility 0.4s;
+    transition:
+      opacity 0.4s ease-out,
+      visibility 0.4s;
     backface-visibility: hidden;
   }
 
@@ -135,7 +142,7 @@ const skillsData: SkillData[] = [
     gap: 0.5rem 0.75rem;
     padding: 0;
     margin: 0.5rem 0 0 0;
-		list-style: none;
+    list-style: none;
   }
 
   .tech-list li {

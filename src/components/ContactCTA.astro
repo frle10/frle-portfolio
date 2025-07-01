@@ -3,40 +3,42 @@ import CallToAction from './CallToAction.astro';
 import Icon from './Icon.astro';
 
 type SocialLink = {
-	href: string;
-	icon: 'github-logo' | 'linkedin-logo' | 'youtube-logo';
-	aria: string;
+  href: string;
+  icon: 'github-logo' | 'linkedin-logo' | 'youtube-logo';
+  aria: string;
   label: string;
 };
 
 const socialLinks: SocialLink[] = [
-	{
-		href: 'https://www.linkedin.com/in/ivan-skorupan-9ba1b118b/',
-		icon: 'linkedin-logo',
-		aria: 'Connect with me on LinkedIn',
-    label: 'LinkedIn'
-	},
+  {
+    href: 'https://www.linkedin.com/in/ivan-skorupan-9ba1b118b/',
+    icon: 'linkedin-logo',
+    aria: 'Connect with me on LinkedIn',
+    label: 'LinkedIn',
+  },
   {
     href: 'https://github.com/frle10',
     icon: 'github-logo',
     aria: 'View my work on GitHub',
-    label: 'GitHub'
+    label: 'GitHub',
   },
   {
     href: 'https://www.youtube.com/@Frlee',
     icon: 'youtube-logo',
     aria: 'Subscribe to my YouTube channel',
-    label: 'YouTube'
+    label: 'YouTube',
   },
-]
+];
 ---
 
 <aside class="contact-section">
   <div class="wrapper">
-
     <div class="content">
       <h2>Interested in working together?</h2>
-      <p>I’m always open to discussing new projects and opportunities. If you have something in mind, I'd love to hear from you.</p>
+      <p>
+        I’m always open to discussing new projects and opportunities. If you have something in mind,
+        I'd love to hear from you.
+      </p>
     </div>
 
     <div class="actions">
@@ -47,13 +49,21 @@ const socialLinks: SocialLink[] = [
     </div>
 
     <div class="socials">
-        {socialLinks.map(link => (
-          <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.aria} class="social-link" data-tooltip={link.label}>
+      {
+        socialLinks.map(link => (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.aria}
+            class="social-link"
+            data-tooltip={link.label}
+          >
             <Icon icon={link.icon} size="2em" />
           </a>
-        ))}
+        ))
+      }
     </div>
-
   </div>
 </aside>
 
@@ -102,7 +112,9 @@ const socialLinks: SocialLink[] = [
   .social-link {
     position: relative;
     color: var(--gray-0);
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
   }
 
   .social-link:hover {
@@ -127,10 +139,12 @@ const socialLinks: SocialLink[] = [
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
   }
 
-  .social-link:hover::after, 
+  .social-link:hover::after,
   .social-link:focus::after {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
@@ -144,7 +158,7 @@ const socialLinks: SocialLink[] = [
     }
 
     h2 {
-        font-size: var(--text-4xl);
+      font-size: var(--text-4xl);
     }
   }
 </style>

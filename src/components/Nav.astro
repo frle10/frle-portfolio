@@ -10,7 +10,11 @@ const textLinks: { label: string; href: string }[] = [
 ];
 
 const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[] = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ivan-skorupan-9ba1b118b/', icon: 'linkedin-logo' },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/ivan-skorupan-9ba1b118b/',
+    icon: 'linkedin-logo',
+  },
   { label: 'GitHub', href: 'https://github.com/frle10', icon: 'github-logo' },
   { label: 'YouTube', href: 'https://www.youtube.com/@Frlee', icon: 'youtube-logo' },
 ];
@@ -18,7 +22,9 @@ const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[]
 const isCurrentPage = (href: string) => {
   const currentPathname = Astro.url.pathname;
   if (href === '/') return currentPathname === '/';
-  const formattedPathname = currentPathname.endsWith('/') ? currentPathname.slice(0, -1) : currentPathname;
+  const formattedPathname = currentPathname.endsWith('/')
+    ? currentPathname.slice(0, -1)
+    : currentPathname;
   const formattedHref = href.endsWith('/') ? href.slice(0, -1) : href;
   return formattedPathname.startsWith(formattedHref);
 };
@@ -41,38 +47,50 @@ const isCurrentPage = (href: string) => {
       </template>
     </menu-button>
   </div>
-  
+
   <noscript>
     <ul class="nav-items">
-      {textLinks.map(({ label, href }) => (
-        <li>
-          <a aria-current={isCurrentPage(href) ? 'page' : undefined} class="link" href={href}>
-            {label}
-          </a>
-        </li>
-      ))}
+      {
+        textLinks.map(({ label, href }) => (
+          <li>
+            <a aria-current={isCurrentPage(href) ? 'page' : undefined} class="link" href={href}>
+              {label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </noscript>
 
   <div id="menu-content" hidden>
     <ul class="nav-items">
-      {textLinks.map(({ label, href }) => (
-        <li>
-          <a aria-current={isCurrentPage(href) ? 'page' : undefined} class="link" href={href}>
-            {label}
-          </a>
-        </li>
-      ))}
+      {
+        textLinks.map(({ label, href }) => (
+          <li>
+            <a aria-current={isCurrentPage(href) ? 'page' : undefined} class="link" href={href}>
+              {label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
     <div class="menu-footer">
       <div class="socials">
-        {iconLinks.map(({ href, icon, label }) => (
-          <a target="_blank" href={href} class="social" rel="noopener noreferrer" data-tooltip={label}>
-            <span class="sr-only">{label}</span>
-            <Icon icon={icon} size='2em' />
-          </a>
-        ))}
+        {
+          iconLinks.map(({ href, icon, label }) => (
+            <a
+              target="_blank"
+              href={href}
+              class="social"
+              rel="noopener noreferrer"
+              data-tooltip={label}
+            >
+              <span class="sr-only">{label}</span>
+              <Icon icon={icon} size="2em" />
+            </a>
+          ))
+        }
       </div>
 
       <div class="theme-toggle">
@@ -93,7 +111,7 @@ const isCurrentPage = (href: string) => {
       if (!btn || !menu) {
         return;
       }
-      
+
       menu.hidden = true;
       menu.classList.add('menu-content');
 
@@ -116,7 +134,7 @@ const isCurrentPage = (href: string) => {
           setExpanded(true);
         }
       };
-      
+
       const mediaQueries = window.matchMedia('(max-width: 61.99em)');
       handleViewports(mediaQueries);
       mediaQueries.addEventListener('change', handleViewports);
@@ -146,7 +164,7 @@ const isCurrentPage = (href: string) => {
     align-items: center;
     gap: 0.5rem;
     padding: 1.5rem;
-    background-color: transparent; 
+    background-color: transparent;
     border-bottom: none;
     position: relative;
     z-index: 20;
@@ -176,7 +194,7 @@ const isCurrentPage = (href: string) => {
     box-shadow: var(--shadow-sm);
     cursor: pointer;
   }
-  
+
   .menu-button[aria-expanded='true'] {
     color: var(--gray-0);
   }
@@ -191,11 +209,22 @@ const isCurrentPage = (href: string) => {
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
   }
-  .menu-button .icon-close { opacity: 0; transform: translate(-50%, -50%) rotate(-90deg); }
-  .menu-button[aria-expanded='true'] .icon-menu { opacity: 0; transform: translate(-50%, -50%) rotate(90deg); }
-  .menu-button[aria-expanded='true'] .icon-close { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+  .menu-button .icon-close {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-90deg);
+  }
+  .menu-button[aria-expanded='true'] .icon-menu {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  .menu-button[aria-expanded='true'] .icon-close {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
 
   .menu-content {
     position: absolute;
@@ -247,10 +276,13 @@ const isCurrentPage = (href: string) => {
     position: relative;
     display: flex;
     color: var(--gray-0);
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
   }
 
-  .social:hover, .social:focus {
+  .social:hover,
+  .social:focus {
     color: var(--accent-regular);
     transform: translateY(-3px);
   }
@@ -261,7 +293,7 @@ const isCurrentPage = (href: string) => {
     top: 140%;
     left: 50%;
     transform: translateX(-50%) translateY(-5px);
-    
+
     background: var(--gray-900);
     color: var(--gray-50);
     font-family: var(--font-body);
@@ -273,10 +305,13 @@ const isCurrentPage = (href: string) => {
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
   }
 
-  .social:hover::after, .social:focus::after {
+  .social:hover::after,
+  .social:focus::after {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
@@ -290,9 +325,13 @@ const isCurrentPage = (href: string) => {
       gap: 1rem;
     }
 
-    .menu-header { padding: 0; }
+    .menu-header {
+      padding: 0;
+    }
 
-    .menu-content { display: contents; }
+    .menu-content {
+      display: contents;
+    }
 
     .nav-items {
       position: relative;
@@ -318,10 +357,13 @@ const isCurrentPage = (href: string) => {
     .link {
       padding: 0.5rem 1rem;
       border-radius: 999rem;
-      transition: color var(--theme-transition), background-color var(--theme-transition);
+      transition:
+        color var(--theme-transition),
+        background-color var(--theme-transition);
     }
 
-    .link:hover, .link:focus {
+    .link:hover,
+    .link:focus {
       color: var(--gray-100);
       background-color: var(--accent-subtle-overlay);
     }

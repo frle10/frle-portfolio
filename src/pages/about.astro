@@ -7,70 +7,84 @@ import Hero from '../components/Hero.astro';
 ---
 
 <BaseLayout title="About | Ivan Skorupan" description="About Ivan Skorupan">
-	<div class="stack gap-20">
-		<main class="wrapper about">
-			<Hero
-				title="About"
-				tagline="I care about building things that last — in code, in teams, and in life."
-			>
-				<img
-					width="1553"
-					height="873"
-					src="/assets/at-work.jpg"
-					alt="A portrait of Ivan Skorupan in his home office."
-				/>
-			</Hero>
+  <div class="stack gap-20">
+    <main class="wrapper about">
+      <Hero
+        title="About"
+        tagline="I care about building things that last — in code, in teams, and in life."
+      >
+        <img
+          width="1553"
+          height="873"
+          src="/assets/at-work.jpg"
+          alt="A portrait of Ivan Skorupan in his home office."
+        />
+      </Hero>
 
-			<section>
-				<h2 class="section-title">My Story</h2>
-				<div class="content">
-					<h3>From Zagreb to Amsterdam</h3>
-					<p>
-						I'm a full-stack engineer and solution architect currently based in <strong>Amsterdam, Netherlands</strong>. My journey into tech began in Zagreb, Croatia, where I spent several years in the startup scene, focusing on a single mission: helping companies build resilient products, grow their technical foundations, and scale their teams effectively.
-					</p>
+      <section>
+        <h2 class="section-title">My Story</h2>
+        <div class="content">
+          <h3>From Zagreb to Amsterdam</h3>
+          <p>
+            I'm a full-stack engineer and solution architect currently based in <strong
+              >Amsterdam, Netherlands</strong
+            >. My journey into tech began in Zagreb, Croatia, where I spent several years in the
+            startup scene, focusing on a single mission: helping companies build resilient products,
+            grow their technical foundations, and scale their teams effectively.
+          </p>
 
-					<h3>A Builder at Heart</h3>
-					<p>
-						My passion lies in building things that last. I've worked across the entire stack, from leading frontend development and shaping company-wide UI libraries to designing robust backend systems. I thrive on bridging the gap between product and engineering, ensuring that what we build not only works flawlessly but also makes perfect sense for the business and its users.
-					</p>
+          <h3>A Builder at Heart</h3>
+          <p>
+            My passion lies in building things that last. I've worked across the entire stack, from
+            leading frontend development and shaping company-wide UI libraries to designing robust
+            backend systems. I thrive on bridging the gap between product and engineering, ensuring
+            that what we build not only works flawlessly but also makes perfect sense for the
+            business and its users.
+          </p>
 
-					<h3>Current Focus</h3>
-					<p>
-						After relocating to the Netherlands, my focus has sharpened. I am dedicated to solving complex, real-world problems, deepening my technical expertise, and exploring what a sustainable and meaningful career in technology looks like.
-					</p>
-				</div>
-			</section>
+          <h3>Current Focus</h3>
+          <p>
+            After relocating to the Netherlands, my focus has sharpened. I am dedicated to solving
+            complex, real-world problems, deepening my technical expertise, and exploring what a
+            sustainable and meaningful career in technology looks like.
+          </p>
+        </div>
+      </section>
 
-			<section>
-				<h2 class="section-title">Education & Growth</h2>
-				<div class="content">
-					<div class="education-entry">
-						<h4>Master of Science in Computer Science</h4>
-						<p class="university">University of Zagreb, Faculty of Electrical Engineering and Computing</p>
-					</div>
+      <section>
+        <h2 class="section-title">Education & Growth</h2>
+        <div class="content">
+          <div class="education-entry">
+            <h4>Master of Science in Computer Science</h4>
+            <p class="university">
+              University of Zagreb, Faculty of Electrical Engineering and Computing
+            </p>
+          </div>
 
-					<div class="education-entry">
-						<h4>Certifications & Achievements</h4>
-						<ul>
-							<li>AWS Certified Cloud Practitioner (CLF-C02)</li>
-							<li>2nd Place - LUMEN Development Competition (Croatia), organized by eSTUDENT</li>
-						</ul>
-					</div>
+          <div class="education-entry">
+            <h4>Certifications & Achievements</h4>
+            <ul>
+              <li>AWS Certified Cloud Practitioner (CLF-C02)</li>
+              <li>2nd Place - LUMEN Development Competition (Croatia), organized by eSTUDENT</li>
+            </ul>
+          </div>
 
-					<div class="education-entry">
-						<h4>Continued Professional Learning</h4>
-						<p>Beyond my formal education, I believe in constant growth. My most valuable experience has come from hands-on work in:
-							<ul>
-								<li>Architecting and scaling complex software systems.</li>
-								<li>Mentoring and leading high-performing engineering teams.</li>
-								<li>Navigating product strategy and driving technical roadmaps.</li>
-							</ul>
-						</p>
-					</div>
-				</div>
-			</section>
+          <div class="education-entry">
+            <h4>Continued Professional Learning</h4>
+            <p>
+              Beyond my formal education, I believe in constant growth. My most valuable experience
+              has come from hands-on work in:
+              <ul>
+                <li>Architecting and scaling complex software systems.</li>
+                <li>Mentoring and leading high-performing engineering teams.</li>
+                <li>Navigating product strategy and driving technical roadmaps.</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </section>
 
-			<section>
+      <section>
         <h2 class="section-title">Skills & Technologies</h2>
         <div class="content skills-content">
           <div class="skill-category">
@@ -79,7 +93,7 @@ import Hero from '../components/Hero.astro';
               <Pill>TypeScript</Pill>
               <Pill>JavaScript</Pill>
               <Pill>Node.js</Pill>
-							<Pill>Java</Pill>
+              <Pill>Java</Pill>
               <Pill>Python</Pill>
               <Pill>HTML5</Pill>
               <Pill>CSS3</Pill>
@@ -89,7 +103,7 @@ import Hero from '../components/Hero.astro';
             <h3>Frameworks & Libraries</h3>
             <div class="pills">
               <Pill>React</Pill>
-							<Pill>NextJS</Pill>
+              <Pill>NextJS</Pill>
               <Pill>Astro</Pill>
             </div>
           </div>
@@ -114,10 +128,10 @@ import Hero from '../components/Hero.astro';
           </div>
         </div>
       </section>
-		</main>
+    </main>
 
-		<ContactCTA />
-	</div>
+    <ContactCTA />
+  </div>
 </BaseLayout>
 
 <style>
@@ -133,13 +147,13 @@ import Hero from '../components/Hero.astro';
     box-shadow: var(--shadow-md);
   }
 
-	.about img {
-		display: block;
-		width: 100%;
-		max-width: 50rem;
-		height: auto;
-		margin-inline: auto; 
-	}
+  .about img {
+    display: block;
+    width: 100%;
+    max-width: 50rem;
+    height: auto;
+    margin-inline: auto;
+  }
 
   section {
     color: var(--gray-200);
@@ -180,49 +194,49 @@ import Hero from '../components/Hero.astro';
     text-decoration-color: currentColor;
   }
 
-	.skills-content {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
+  .skills-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-	.skill-category h3 {
-		margin-bottom: 1rem;
-		text-align: center;
-		font-size: var(--text-lg);
-		color: var(--gray-300);
-	}
+  .skill-category h3 {
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: var(--text-lg);
+    color: var(--gray-300);
+  }
 
-	.pills {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 0.75rem;
-	}
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
 
-	.education-entry {
-		padding: 1.5rem 0;
-	}
+  .education-entry {
+    padding: 1.5rem 0;
+  }
 
-	.education-entry + .education-entry {
-		border-top: 1px solid var(--gray-800);
-	}
+  .education-entry + .education-entry {
+    border-top: 1px solid var(--gray-800);
+  }
 
-	.education-entry h4 {
-		font-size: var(--text-lg);
-		color: var(--gray-100);
-		margin-bottom: 0.25rem;
-	}
+  .education-entry h4 {
+    font-size: var(--text-lg);
+    color: var(--gray-100);
+    margin-bottom: 0.25rem;
+  }
 
-	.university {
-		color: var(--gray-400);
-	}
+  .university {
+    color: var(--gray-400);
+  }
 
-	.education-entry ul {
-		list-style-type: '—  ';
-		padding-left: 1.25rem;
-		margin-top: 1rem;
-	}
+  .education-entry ul {
+    list-style-type: '—  ';
+    padding-left: 1.25rem;
+    margin-top: 1rem;
+  }
 
   @media (min-width: 50em) {
     .about {
