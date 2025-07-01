@@ -90,7 +90,9 @@ const isCurrentPage = (href: string) => {
       const btn = this.querySelector('button');
       const menu = document.getElementById('menu-content');
 
-      if (!btn || !menu) return;
+      if (!btn || !menu) {
+        return;
+      }
       
       menu.hidden = true;
       menu.classList.add('menu-content');
@@ -120,11 +122,11 @@ const isCurrentPage = (href: string) => {
       mediaQueries.addEventListener('change', handleViewports);
     }
   }
+
   customElements.define('menu-button', MenuButton);
 </script>
 
 <style>
-  /* --- Base Styles for All Screen Sizes --- */
   nav {
     font-family: var(--font-brand);
     font-weight: 500;
@@ -169,10 +171,9 @@ const isCurrentPage = (href: string) => {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1.5rem;
-    color: var(--gray-300);
-    background: radial-gradient(var(--gray-900), var(--gray-800) 150%);
-    box-shadow: var(--shadow-md);
-    outline: none;
+    color: var(--gray-0);
+    background: radial-gradient(var(--gray-800), var(--gray-700) 150%);
+    box-shadow: var(--shadow-sm);
     cursor: pointer;
   }
   
@@ -201,7 +202,6 @@ const isCurrentPage = (href: string) => {
     left: 0;
     right: 0;
     z-index: 10;
-    /* The dropdown needs a solid background to be readable */
     background-color: var(--gray-999);
     border-bottom: 1px solid var(--gray-800);
     border-radius: 0 0 0.75rem 0.75rem;
@@ -255,7 +255,6 @@ const isCurrentPage = (href: string) => {
     transform: translateY(-3px);
   }
 
-/* --- The New Tooltip Styles --- */
   .social::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -272,20 +271,16 @@ const isCurrentPage = (href: string) => {
     border-radius: 0.25rem;
     box-shadow: var(--shadow-md);
     white-space: nowrap;
-
-    /* Hide it by default */
     opacity: 0;
-    pointer-events: none; /* Make sure it doesn't block clicks */
+    pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
   .social:hover::after, .social:focus::after {
-    /* Show it on hover */
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
 
-  /* --- Desktop Styles --- */
   @media (min-width: 62em) {
     nav {
       display: grid;
