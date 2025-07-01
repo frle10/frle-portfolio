@@ -179,19 +179,22 @@ const { Content } = await render(entry);
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    justify-content: center;
   }
-  
+
   .links {
     gap: 1rem;
+    border-top: 1px solid var(--gray-800);
+    padding-top: 1.5rem;
   }
 
   .image-link {
-  display: block;
-  overflow: hidden;
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--gray-800);
-}
+    display: block;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-800);
+  }
 
   .image-link img {
     width: 100%;
@@ -223,6 +226,10 @@ const { Content } = await render(entry);
       display: flex;
       flex-direction: column;
       gap: 2rem;
+    }
+
+    .tags {
+      justify-content: flex-start;
     }
   }
 </style>
