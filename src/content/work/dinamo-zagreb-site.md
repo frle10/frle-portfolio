@@ -8,8 +8,14 @@ description: |
 tags:
   - Backend
   - CMS
-  - Node.js
-  - MongoDB
+  - NestJS
+  - PostgreSQL
+
+role: 'Lead Engineer & Architect'
+client: 'Basketball Club Dinamo Zagreb'
+year: '2019-2020'
+liveUrl: 'https://kkdinamo.hr/'
+repoUrl: 'https://github.com/frle10/kk-dinamo-webapp-backend'
 ---
 
 ## Project Overview

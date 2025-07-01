@@ -1,12 +1,13 @@
 ---
 interface Props {
 	href: string;
+	target?: string;
 }
 
-const { href } = Astro.props;
+const { href, target } = Astro.props;
 ---
 
-<a href={href}><slot /></a>
+<a href={href} target={target}><slot /></a>
 
 <style>
 	a {
@@ -32,7 +33,6 @@ const { href } = Astro.props;
 		}
 	}
 
-	/* Overlay for hover effects. */
 	a::after {
 		content: '';
 		position: absolute;

@@ -8,9 +8,15 @@ description: |
 tags:
   - Architecture
   - Consulting
-  - Cloud
-  - Go
-  - AWS
+  - Digital Transformation Projects
+  - Team Leadership
+  - Technical Presentations
+
+role: 'Software Engineer'
+client: 'Government agencies, banks, big private firms'
+year: '2022-2025'
+liveUrl: 'https://kkdinamo.hr/'
+repoUrl: 'https://github.com/frle10/kk-dinamo-webapp-backend'
 ---
 
 ## Project Overview

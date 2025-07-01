@@ -1,0 +1,51 @@
+---
+// src/components/Button.astro
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+}
+
+const { href, ...rest } = Astro.props;
+
+const isExternal = href && (href.startsWith('http') || href.startsWith('//'));
+---
+
+<a
+  href={href}
+  class:list={['btn']}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  {...rest}
+>
+  <slot />
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--accent-regular);
+    border-radius: 999px;
+    font-family: var(--font-brand);
+    font-size: var(--text-base);
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--gradient-accent-orange);
+		box-shadow: var(--shadow-md);
+    white-space: nowrap;
+    transition: all 0.2s ease-out;
+    background-color: var(--accent-regular);
+    color: var(--accent-text-over);
+    text-shadow: 0 1px 2px hsla(var(--gray-999-basis), 0.2);
+  }
+
+  .btn:hover {
+    background-color: var(--accent-dark);
+    border-color: var(--accent-dark);
+    transform: translateY(-2px);
+  }
+</style>
