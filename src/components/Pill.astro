@@ -22,16 +22,16 @@
       box-shadow 0.2s ease-out;
   }
 
-  .pill:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: var(--shadow-md);
-  }
-
   @media (min-width: 50em) {
     .pill {
       width: auto;
       justify-content: flex-start;
       padding: 0.5rem 1rem;
+    }
+
+    .pill:hover {
+      transform: translateY(-1px) scale(1.005);
+      box-shadow: var(--shadow-md);
     }
   }
 </style>
