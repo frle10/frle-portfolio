@@ -94,24 +94,30 @@ const projects = (await getCollection('work'))
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icon icon="linkedin-logo" size="2em" />
-                <h4>Connect on LinkedIn</h4>
+                <div class="logo-title-container">
+                  <Icon icon="linkedin-logo" size="2em" />
+                  <h4>Connect on LinkedIn</h4>
+                </div>
                 <p>For professional networking and industry insights.</p>
               </a>
             </li>
 
             <li class="mention-card">
               <a href="https://github.com/frle10" target="_blank" rel="noopener noreferrer">
-                <Icon icon="github-logo" size="2em" />
-                <h4>Follow on GitHub</h4>
+                <div class="logo-title-container">
+                  <Icon icon="github-logo" size="2em" />
+                  <h4>Follow on GitHub</h4>
+                </div>
                 <p>To see my latest projects and contributions.</p>
               </a>
             </li>
 
             <li class="mention-card">
               <a href="https://www.youtube.com/@Frlee" target="_blank" rel="noopener noreferrer">
-                <Icon icon="youtube-logo" size="2em" />
-                <h4>Watch on YouTube</h4>
+                <div class="logo-title-container">
+                  <Icon icon="youtube-logo" size="2em" />
+                  <h4>Watch on YouTube</h4>
+                </div>
                 <p>For tutorials and thoughts on modern web development.</p>
               </a>
             </li>
@@ -312,5 +318,24 @@ const projects = (await getCollection('work'))
     font-size: var(--text-sm);
     color: var(--gray-400);
     margin: 0;
+  }
+
+  .logo-title-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (min-width: 50em) {
+    .logo-title-container {
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .mention-card a {
+      justify-content: flex-start;
+    }
   }
 </style>
