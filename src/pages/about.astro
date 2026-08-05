@@ -1,6 +1,9 @@
 ---
+import { Image } from 'astro:assets';
+
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Pill from '../components/Pill.astro';
+import atWork from '../assets/at-work.jpg';
 
 import ContactCTA from '../components/ContactCTA.astro';
 import Hero from '../components/Hero.astro';
@@ -13,10 +16,10 @@ import Hero from '../components/Hero.astro';
         title="About"
         tagline="I care about building things that last — in code, in teams, and in life."
       >
-        <img
-          width="1553"
-          height="873"
-          src="/assets/at-work.jpg"
+        <Image
+          src={atWork}
+          widths={[400, 800, 1200, atWork.width]}
+          sizes="(min-width: 50em) 50em, 100vw"
           alt="A portrait of Ivan Skorupan in his home office."
         />
       </Hero>

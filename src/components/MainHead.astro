@@ -1,25 +1,42 @@
 ---
 import '../styles/global.css';
+import { getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
+
+import defaultSocialImage from '../assets/at-work.jpg';
 
 interface Props {
   title?: string | undefined;
   description?: string | undefined;
-  image?: string | undefined;
+  image?: ImageMetadata | undefined;
   imageAlt?: string | undefined;
+  ogType?: 'website' | 'article' | undefined;
+  noindex?: boolean | undefined;
 }
 
 const {
   title = 'Ivan Skorupan: Personal Site',
   description = 'The personal site of Ivan Skorupan',
-  image = '/assets/at-work.jpg',
+  image = defaultSocialImage,
   imageAlt = 'Ivan Skorupan at work',
+  ogType = 'website',
+  noindex = false,
 } = Astro.props;
+
+// The source screenshots run to several MB, which scrapers time out on well below X's 5MB cap.
+// Emit a cropped 1200x630 JPEG — the size every social platform actually wants.
+const socialImage = await getImage({
+  src: image,
+  width: 1200,
+  height: 630,
+  fit: 'cover',
+  format: 'jpeg',
+});
 
 // Both must be absolute: social scrapers ignore relative og:image paths, and a canonical link
 // only disambiguates if it names an origin. `site` in astro.config.mjs supplies it.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImageURL = new URL(image, Astro.site);
+const socialImageURL = new URL(socialImage.src, Astro.site);
 ---
 
 <meta charset="UTF-8" />
@@ -27,13 +44,16 @@ const socialImageURL = new URL(image, Astro.site);
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
 <title>{title}</title>
-<link rel="canonical" href={canonicalURL} />
+{/* A noindex page has no canonical destination to point at. */}
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
 
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:site_name" content="Ivan Skorupan" />
 <meta property="og:title" content={title} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:image" content={socialImageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={imageAlt} />
 {/* X, LinkedIn and Slack fall back to the og: tags for title, description and image. */}
 <meta name="twitter:card" content="summary_large_image" />
