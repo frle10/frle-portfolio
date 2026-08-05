@@ -6,7 +6,8 @@ interface Props {
 const { variant } = Astro.props;
 ---
 
-<ul class:list={['grid', { offset: variant === 'offset', small: variant === 'small' }]}>
+{/* role="list" restores the semantics that `list-style: none` strips in Safari/VoiceOver. */}
+<ul role="list" class:list={['grid', { offset: variant === 'offset', small: variant === 'small' }]}>
   <slot />
 </ul>
 

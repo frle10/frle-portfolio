@@ -52,4 +52,3 @@ Photos and videos are uploaded, optimized, and served via a CDN-friendly solutio
 
 - **Backend:** Node.js with Express
 - **Database:** MongoDB + Mongoose
-- **Admin Panel:** Custom-built UI using

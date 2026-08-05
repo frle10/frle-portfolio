@@ -329,7 +329,8 @@ const projects = (await getCollection('work'))
 
   .mention-card p {
     font-size: var(--text-sm);
-    color: var(--gray-400);
+    /* --gray-400 on --gradient-subtle is 4.19:1, under AA for this size. */
+    color: var(--gray-300);
     margin: 0;
   }
 

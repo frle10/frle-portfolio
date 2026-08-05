@@ -39,7 +39,10 @@ import Icon from './Icon.astro';
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1.25rem;
-    color: var(--accent-overlay);
+    /* Was --accent-overlay, a 33%-alpha purple: under 3:1 against the --gray-999 button in both
+       themes, and this is a non-text UI control. --gray-300 inverts with the theme and clears it
+       either way (6.7:1 light, 8.5:1 dark). */
+    color: var(--gray-300);
   }
 
   .icon.light::before {

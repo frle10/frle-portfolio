@@ -24,11 +24,19 @@ interface Props {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-// Shared by both branches of the hero image below (linked and unlinked).
 const imageWidths = [400, 800, 1280];
 // `.prose` is 65ch, which measures ~640px here. Stated in px because the browser resolves
 // `sizes` before layout and guesses `ch` far too small, which would pick an upscaled variant.
 const imageSizes = '(min-width: 62em) 640px, 100vw';
+
+// The hero image is a link to the live site when there is one, and a plain frame when there is
+// not. Only the wrapper differs, so vary the tag rather than duplicating the <Image>: the previous
+// unlinked branch put `class="image-link"` on the <img> itself, where `.image-link img` could
+// never match it and the image lost its `width: 100%`.
+const ImageFrame = entry.data.liveUrl ? 'a' : 'div';
+const imageFrameProps = entry.data.liveUrl
+  ? { href: entry.data.liveUrl, target: '_blank', rel: 'noopener noreferrer' }
+  : {};
 ---
 
 <BaseLayout
@@ -51,32 +59,14 @@ const imageSizes = '(min-width: 62em) 640px, 100vw';
     <main class="wrapper">
       <div class="project-layout">
         <div class="prose">
-          {
-            entry.data.img &&
-              (entry.data.liveUrl ? (
-                <a
-                  href={entry.data.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="image-link"
-                >
-                  <Image
-                    src={entry.data.img}
-                    alt={entry.data.img_alt || ''}
-                    widths={imageWidths}
-                    sizes={imageSizes}
-                  />
-                </a>
-              ) : (
-                <Image
-                  src={entry.data.img}
-                  alt={entry.data.img_alt || ''}
-                  widths={imageWidths}
-                  sizes={imageSizes}
-                  class="image-link"
-                />
-              ))
-          }
+          <ImageFrame class="image-link" {...imageFrameProps}>
+            <Image
+              src={entry.data.img}
+              alt={entry.data.img_alt || ''}
+              widths={imageWidths}
+              sizes={imageSizes}
+            />
+          </ImageFrame>
           <Content />
         </div>
 
@@ -239,7 +229,9 @@ const imageSizes = '(min-width: 62em) 640px, 100vw';
     transition: transform 0.4s ease-out;
   }
 
-  .image-link:hover img {
+  /* Only the linked variant zooms — a plain frame is not interactive. */
+  a.image-link:hover img,
+  a.image-link:focus-visible img {
     transform: scale(1.05);
   }
 
