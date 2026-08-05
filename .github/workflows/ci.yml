@@ -18,9 +18,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           # Same source of truth as `nvm use` locally and as Netlify's build image.
           node-version-file: .nvmrc
