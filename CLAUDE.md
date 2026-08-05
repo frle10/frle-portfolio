@@ -10,20 +10,34 @@ npm install          # install deps
 npm run dev          # dev server at http://localhost:4321
 npm run build        # static build to ./dist/
 npm run preview      # serve ./dist/ locally
+npx astro check          # type-check (no npm script for this yet)
 npx prettier --write .   # format (no npm script for this yet)
 ```
 
-There is no test suite, no linter, and no CI. `npx astro check` is not usable as-is — it prompts
-to install `@astrojs/check` + `typescript`, which are not in `devDependencies`.
+There is no test suite, no linter, and no CI. `astro check` is the only automated gate — keep it
+at 0 errors / 0 warnings / 0 hints.
 
-Verified working: `npm run build` produces 9 pages; `npm run dev` serves `/`, `/work/`, and
-`/work/<slug>/` with 200s. Node v24, npm v12.
+Verified working: `npm run build` produces 9 pages in ~540ms; `npm run dev` serves `/`, `/work/`,
+and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constraint).
 
 ## Architecture
 
-Astro 5, `output: 'static'` (the default — `astro.config.mjs` is an empty `defineConfig({})`).
+Astro 7, `output: 'static'` (the default — `astro.config.mjs` is an empty `defineConfig({})`).
 Every page is prerendered at build time. No client-side framework; interactivity is a handful of
 vanilla-TS custom elements defined inline in `.astro` `<script>` blocks.
+
+Astro 7 specifics that constrain how you write markup here:
+
+- **Rust compiler.** Invalid HTML is no longer auto-corrected and unclosed tags are errors. Never
+  nest block elements inside `<p>`. Self-closing non-void elements (`<h2 set:html={x} />`) are
+  fine.
+- **`compressHTML: 'jsx'`** (the default). Whitespace spanning a newline between inline elements
+  is dropped, JSX-style. Where a space is load-bearing and the container is not `flex` + `gap`,
+  write it explicitly as `{' '}` — see [Footer.astro](src/components/Footer.astro). Same-line
+  spaces survive.
+- **Sätteri** is the Markdown pipeline, not remark/rehype. Applies GFM + SmartyPants natively. To
+  use remark/rehype plugins you would have to install `@astrojs/markdown-remark` and set
+  `markdown.processor` to `unified()`.
 
 ### Routing
 
@@ -115,5 +129,10 @@ Worth knowing before proposing changes; these are current facts, not a backlog:
 - `README.md` is still unmodified Astro starter boilerplate.
 - No deploy configuration in the repo (no `.github/`, no adapter, no host config). Remote is
   `git@github.com:frle10/frle-portfolio.git`.
-- Astro is pinned at `^5.12.1` (5.18.2 available on the current major, 7.x is latest). A major
-  upgrade is a deliberate task, not a drive-by.
+- **Theme is lost on soft navigation.** Pre-existing bug, verified present on Astro 5.12.1 too, so
+  it is not upgrade fallout. The `MutationObserver` in
+  [MainHead.astro](src/components/MainHead.astro) persists _any_ `<html>` class change to
+  `localStorage`. During a `ClientRouter` swap the router resets that class attribute, the
+  observer reads it as the user picking light mode and overwrites `localStorage`, and the
+  `astro:after-swap` handler in [ThemeToggle.astro](src/components/ThemeToggle.astro) then reads
+  the corrupted value. Result: dark mode silently reverts to light on every in-site link click.
