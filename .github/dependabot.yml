@@ -1,0 +1,31 @@
+version: 2
+
+# Nothing here is verified by tests — there aren't any. What gates a Dependabot PR is
+# .github/workflows/ci.yml (astro check + prettier) plus the Netlify deploy preview, so read the
+# preview before merging anything that touches Astro or sharp.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci
+    groups:
+      # Two actions, both first-party. One PR a month is plenty.
+      actions:
+        patterns: ['*']
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      # Minor and patch land as a single PR. Majors stay separate — an Astro major has broken
+      # markup handling before (see the Astro 7 notes in CLAUDE.md) and deserves its own review.
+      minor-and-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
