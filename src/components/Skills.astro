@@ -81,7 +81,11 @@ const skillsData: SkillData[] = [
     box-shadow: var(--shadow-md);
   }
 
+  /* Shrink-to-fit, or the wrapper stretches the full grid column and `scale()` grows it
+     symmetrically about the card's centre — which reads as the icon sliding left. */
   .icon-wrapper {
+    display: flex;
+    justify-self: start;
     transition: transform 0.3s ease-out;
   }
 

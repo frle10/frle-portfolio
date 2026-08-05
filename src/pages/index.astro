@@ -293,6 +293,17 @@ const projects = (await getCollection('work'))
     color: var(--gray-300);
     background: var(--gradient-subtle);
     box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease-out;
+  }
+
+  /* Hover/focus lives on the card, not the <a>: the link is the paint surface but
+     the card owns the border, radius and shadow. */
+  .mention-card:hover,
+  .mention-card:has(a:focus-visible) {
+    background: var(--gradient-subtle-hover);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    color: var(--accent-regular);
   }
 
   @media (min-width: 50em) {
@@ -310,16 +321,15 @@ const projects = (await getCollection('work'))
     gap: 0.5rem;
     padding: 1rem;
     text-decoration: none;
-    color: var(--gray-300);
+    color: inherit;
+    width: 100%;
     height: 100%;
-    transition: all 0.2s ease-out;
+    border-radius: inherit;
   }
 
-  .mention-card a:hover,
   .mention-card a:focus-visible {
-    background: var(--gradient-subtle-hover);
-    transform: translateY(-5px);
-    color: var(--accent-regular);
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 2px;
   }
 
   .mention-card h4 {
