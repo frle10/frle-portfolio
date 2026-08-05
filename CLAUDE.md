@@ -18,7 +18,7 @@ There is no test suite, no linter, and no CI. `astro check` is the only automate
 at 0 errors / 0 warnings / 0 hints.
 
 Verified working: `npm run build` produces 9 pages in ~1s cold (sharp processing ~7 images; warm
-builds reuse the `node_modules/.astro` image cache) for a 4.7MB `dist/`; `npm run dev` serves `/`,
+builds reuse the `node_modules/.astro` image cache) for a 3.3MB `dist/`; `npm run dev` serves `/`,
 `/work/`, and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constraint).
 
 ## Architecture
@@ -84,7 +84,7 @@ prunes the unreferenced ones — except the prune never fires for content-collec
 content runtime rehydrates `data.img` by traversing the entry with `neotraverse`, which walks into
 the `ImageMetadata` proxy, and any property read is exactly what marks an original as referenced
 ([astro#11887](https://github.com/withastro/astro/issues/11887), open since 2024). So every source
-ships whole, unreferenced, forever. At 840KB of sources that is 831KB of dead weight in a 4.7MB
+ships whole, unreferenced, forever. At 840KB of sources that is 831KB of dead weight in a 3.3MB
 `dist/` — ignorable. At 12MB it was most of the build. Do not "fix" it with a post-build pruning
 script; that trades a silent-deletion hazard for bytes nobody downloads.
 
@@ -221,6 +221,5 @@ There is no static adapter and none is needed — `output: 'static'` means Netli
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
 
-- `README.md` is still unmodified Astro starter boilerplate.
 - No CI (`.github/` does not exist). Deploys are Netlify-side only — see [Deployment](#deployment).
 - ~~Theme is lost on soft navigation.~~ Fixed — see [Theming](#theming).

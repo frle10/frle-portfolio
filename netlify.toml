@@ -24,8 +24,10 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Fonts are fetched from Google Fonts, and images are unfingerprinted files in public/,
-# so they get a shorter TTL than the hashed assets above.
+# /assets/ now holds only the layered background images. Everything else moved to src/assets/
+# and is emitted fingerprinted under /_astro/ above; backgrounds stay here because they are
+# referenced from CSS custom properties and cannot be run through astro:assets. Unfingerprinted,
+# so they get a real TTL rather than an immutable one.
 [[headers]]
   for = "/assets/*"
   [headers.values]
