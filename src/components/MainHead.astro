@@ -35,15 +35,15 @@ const {
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   };
-  const isDark = getThemePreference() === 'dark';
-  document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
+  const applyThemePreference = root => {
+    root.classList[getThemePreference() === 'dark' ? 'add' : 'remove']('theme-dark');
+  };
+  applyThemePreference(document.documentElement);
 
-  if (typeof localStorage !== 'undefined') {
-    // Watch the document element and persist user preference when it changes.
-    const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains('theme-dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-  }
+  // The ClientRouter replaces the <html> attributes with the incoming document’s on every
+  // navigation, which would drop `theme-dark`. Apply the preference to that document before
+  // the swap so the theme survives without a flash.
+  document.addEventListener('astro:before-swap', event => {
+    applyThemePreference(event.newDocument.documentElement);
+  });
 </script>

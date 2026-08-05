@@ -70,16 +70,20 @@ first 5.
 `Footer`. `BaseLayout` also owns the whole layered-background system: CSS custom properties for
 light/dark background images at 800w/1440w breakpoints, composited in a single `background`
 shorthand on `.backgrounds` with `background-blend-mode`. Below-the-fold backgrounds are lazy-loaded
-by gating them behind a `:root.loaded` class added on `window.load`.
+by gating them behind a `:root.loaded` class added on `window.load` (and carried onto the incoming
+document in `astro:before-swap`, since `load` never fires again after a soft navigation).
 
 ### Theming
 
-Dark mode is a `theme-dark` class on `<html>`. Set by an `is:inline` script in
-[src/components/MainHead.astro](src/components/MainHead.astro) that runs blocking in `<head>` to
-avoid a flash — it reads `localStorage.theme`, falls back to `prefers-color-scheme`, and installs a
-`MutationObserver` that persists any class change back to `localStorage`.
-[ThemeToggle.astro](src/components/ThemeToggle.astro) just toggles the class; it never touches
-storage directly. Keep that split if you change theming.
+Dark mode is a `theme-dark` class on `<html>`. `localStorage.theme` is the single source of truth;
+the class is only ever derived from it. The `is:inline` script in
+[src/components/MainHead.astro](src/components/MainHead.astro) runs blocking in `<head>` to avoid a
+flash — it reads `localStorage.theme`, falls back to `prefers-color-scheme`, applies the class, and
+re-applies it to `event.newDocument` on `astro:before-swap` so the theme survives view transitions
+(see below). [ThemeToggle.astro](src/components/ThemeToggle.astro) is the only writer: it sets
+`localStorage.theme` on click, then re-derives the class. Keep that direction — never persist
+`localStorage` _from_ the class, which is what the old `MutationObserver` did and why the theme used
+to reset on every soft navigation.
 
 ### Styling
 
@@ -103,6 +107,11 @@ stroke/fill to a generated `linearGradient` id.
 `<ClientRouter />` is enabled in `MainHead`, so navigation is client-side. Anything relying on
 first-load-only setup (the `load` listener, custom-element `constructor` work) can silently break
 across transitions — verify nav/theme behavior after soft navigation, not just hard reload.
+
+The swap replaces **all** `<html>` attributes with the incoming document's, so any class set at
+runtime on `:root` (`theme-dark`, `loaded`) is dropped unless it is re-applied in an
+`astro:before-swap` listener. Both are; add new ones there too rather than in `astro:after-swap`,
+which repaints after the class is already missing.
 
 ## Conventions
 
@@ -129,10 +138,4 @@ Worth knowing before proposing changes; these are current facts, not a backlog:
 - `README.md` is still unmodified Astro starter boilerplate.
 - No deploy configuration in the repo (no `.github/`, no adapter, no host config). Remote is
   `git@github.com:frle10/frle-portfolio.git`.
-- **Theme is lost on soft navigation.** Pre-existing bug, verified present on Astro 5.12.1 too, so
-  it is not upgrade fallout. The `MutationObserver` in
-  [MainHead.astro](src/components/MainHead.astro) persists _any_ `<html>` class change to
-  `localStorage`. During a `ClientRouter` swap the router resets that class attribute, the
-  observer reads it as the user picking light mode and overwrites `localStorage`, and the
-  `astro:after-swap` handler in [ThemeToggle.astro](src/components/ThemeToggle.astro) then reads
-  the corrupted value. Result: dark mode silently reverts to light on every in-site link click.
+- ~~Theme is lost on soft navigation.~~ Fixed — see [Theming](#theming).
