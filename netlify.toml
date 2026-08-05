@@ -2,17 +2,21 @@
 # Netlify's build image read the same file — do not add NODE_VERSION here or as a site
 # environment variable, either would win over .nvmrc and the two would drift.
 #
+# Netlify detects pnpm-lock.yaml and installs with pnpm on its own, but it defaults to pnpm 7
+# unless `packageManager` in package.json pins a version — which it does, via corepack. Keep
+# that field in sync with the lockfile or the build image silently falls back.
+#
 # Not settable from this file: which branch is production. That is a site setting
 # (Build & deploy -> Branches and deploy contexts -> Production branch).
 
 [build]
-  command = "npm run build"
+  command = "pnpm run build"
   publish = "dist"
 
 # `netlify dev` proxies the Astro dev server rather than serving ./dist, so the local URL
 # behaves like the deployed site (headers and redirects below are applied) while keeping HMR.
 [dev]
-  command = "npm run dev"
+  command = "pnpm run dev"
   targetPort = 4321
   framework = "#custom"
   autoLaunch = false

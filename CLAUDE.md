@@ -6,20 +6,21 @@ server runtime. Forked from the official `astro portfolio` starter template and 
 ## Commands
 
 ```sh
-npm install          # install deps
-npm run dev          # dev server at http://localhost:4321
-npm run build        # static build to ./dist/
-npm run preview      # serve ./dist/ locally
-npx astro check          # type-check (no npm script for this yet)
-npx prettier --write .   # format (no npm script for this yet)
+corepack enable      # once per machine; installs the pnpm pinned by packageManager
+pnpm install         # install deps
+pnpm dev             # dev server at http://localhost:4321
+pnpm build           # static build to ./dist/
+pnpm preview         # serve ./dist/ locally
+pnpm exec astro check         # type-check (no script for this yet)
+pnpm exec prettier --write .  # format (no script for this yet)
 ```
 
 There is no test suite and no linter. `astro check` is the only correctness gate — keep it at
 0 errors / 0 warnings / 0 hints. [.github/workflows/ci.yml](.github/workflows/ci.yml) runs it plus
 `prettier --check .` on every PR and on `main`; both must pass before merging.
 
-Verified working: `npm run build` produces 9 pages in ~1s cold (sharp processing ~7 images; warm
-builds reuse the `node_modules/.astro` image cache) for a 3.1MB `dist/`; `npm run dev` serves `/`,
+Verified working: `pnpm build` produces 9 pages in ~1s cold (sharp processing ~7 images; warm
+builds reuse the `node_modules/.astro` image cache) for a 3.1MB `dist/`; `pnpm dev` serves `/`,
 `/work/`, and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constraint).
 
 ## Architecture
@@ -180,6 +181,22 @@ resolved against `context.site`. `MainHead` emits the `rel="alternate"` discover
 `@astrojs/sitemap` only indexes pages, so `rss.xml` does not appear in `sitemap-0.xml` and the
 `filter` needs no widening. `robots.txt` has no feed directive — nothing to add there either.
 
+## Package manager
+
+pnpm, pinned by `packageManager` and provided by corepack — `npm install` here produces a
+`package-lock.json` that nothing reads and a `node_modules` layout the lockfile does not describe.
+
+[pnpm-workspace.yaml](pnpm-workspace.yaml) exists despite this not being a workspace: pnpm 10+
+reads its settings from that file. It carries `allowBuilds`, because pnpm blocks dependency install
+scripts by default and **refuses to install at all** until each one is ruled on explicitly — a
+fresh `esbuild` major will fail the build with `ERR_PNPM_IGNORED_BUILDS` until it is listed.
+
+**`sharp` is a direct dependency on purpose.** Nothing in the source imports it; Astro's image
+service does. Under npm's hoisting that resolved fine as a transitive dep, but pnpm's strict
+`node_modules` makes it invisible from the project root, and the build then _warns_ rather than
+fails — you get `MissingSharp: Could not find Sharp`, zero optimized images, and a successful exit
+code. Do not remove it as "unused". Its version should track whatever Astro pulls in.
+
 ## Conventions
 
 - Prettier config in [.prettierrc.json](.prettierrc.json): single quotes, semicolons, `printWidth`
@@ -211,9 +228,13 @@ Two things the toml deliberately does not own:
   just use the dashboard.
 - **Node version** comes from [.nvmrc](.nvmrc) (currently `24`), which both `nvm use` and Netlify
   read. A `NODE_VERSION` env var would override it; the site has none set, keep it that way.
+- **pnpm version** comes from `packageManager` in [package.json](package.json), via corepack.
+  Netlify detects `pnpm-lock.yaml` and installs with pnpm on its own, but defaults to **pnpm 7**
+  when that field is absent — so it is load-bearing, not decoration. Bump it with `corepack use`
+  rather than by hand, so the embedded integrity hash stays correct.
 
 `netlify dev` runs the Astro dev server behind Netlify's proxy so the headers apply locally, unlike
-plain `npm run dev`. `netlify link` state lives in gitignored `.netlify/`.
+plain `pnpm dev`. `netlify link` state lives in gitignored `.netlify/`.
 
 There is no static adapter and none is needed — `output: 'static'` means Netlify just serves
 `dist/`.
