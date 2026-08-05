@@ -27,13 +27,13 @@ vanilla-TS custom elements defined inline in `.astro` `<script>` blocks.
 
 ### Routing
 
-| Route | File |
-| --- | --- |
-| `/` | [src/pages/index.astro](src/pages/index.astro) |
-| `/work/` | [src/pages/work.astro](src/pages/work.astro) |
+| Route           | File                                                                 |
+| --------------- | -------------------------------------------------------------------- |
+| `/`             | [src/pages/index.astro](src/pages/index.astro)                       |
+| `/work/`        | [src/pages/work.astro](src/pages/work.astro)                         |
 | `/work/<slug>/` | [src/pages/work/[...slug].astro](src/pages/work/%5B...slug%5D.astro) |
-| `/about/` | [src/pages/about.astro](src/pages/about.astro) |
-| 404 | [src/pages/404.astro](src/pages/404.astro) |
+| `/about/`       | [src/pages/about.astro](src/pages/about.astro)                       |
+| 404             | [src/pages/404.astro](src/pages/404.astro)                           |
 
 ### Content
 
