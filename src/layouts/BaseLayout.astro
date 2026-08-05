@@ -29,6 +29,15 @@ const { title, description } = Astro.props;
     <script>
       // Add “loaded” class once the document has completely loaded.
       addEventListener('load', () => document.documentElement.classList.add('loaded'));
+
+      // `load` only fires on a hard navigation, and the ClientRouter overwrites the <html>
+      // attributes on every swap. Carry the class over so below-the-fold backgrounds keep
+      // loading after a soft navigation.
+      document.addEventListener('astro:before-swap', event => {
+        if (document.documentElement.classList.contains('loaded')) {
+          event.newDocument.documentElement.classList.add('loaded');
+        }
+      });
     </script>
 
     <style>

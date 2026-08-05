@@ -78,6 +78,8 @@ import Icon from './Icon.astro';
 </style>
 
 <script>
+  // The stored preference is the source of truth; the inline script in MainHead applies it on
+  // load and across view transitions. This only needs to reflect a fresh click immediately.
   const applyTheme = () => {
     const theme = localStorage.getItem('theme');
     if (theme === 'dark') {
@@ -86,9 +88,6 @@ import Icon from './Icon.astro';
       document.documentElement.classList.remove('theme-dark');
     }
   };
-
-  applyTheme();
-  document.addEventListener('astro:after-swap', applyTheme);
 
   class ThemeToggle extends HTMLElement {
     constructor() {
