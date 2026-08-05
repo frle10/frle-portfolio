@@ -127,8 +127,15 @@ const { data, id } = Astro.props.project;
     font-weight: 500;
   }
 
+  /* No hover below 50em, so the details have no reveal to belong to — the image and title carry
+     the card, and `display: none` keeps the duplicated text out of the a11y tree too. */
   .details {
+    display: none;
     color: var(--gray-300);
+  }
+
+  .scrim {
+    opacity: 0;
   }
 
   .details p {
@@ -168,8 +175,10 @@ const { data, id } = Astro.props.project;
       height: 22rem;
     }
 
-    /* Below this breakpoint there is no hover to reveal with, so the details stay visible.
-       Only hide them once the card is tall enough for the image to carry the card on its own. */
+    .details {
+      display: block;
+    }
+
     .details,
     .scrim {
       opacity: 0;
