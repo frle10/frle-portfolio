@@ -17,7 +17,8 @@ npx prettier --write .   # format (no npm script for this yet)
 There is no test suite, no linter, and no CI. `astro check` is the only automated gate — keep it
 at 0 errors / 0 warnings / 0 hints.
 
-Verified working: `npm run build` produces 9 pages in ~540ms; `npm run dev` serves `/`, `/work/`,
+Verified working: `npm run build` produces 9 pages in ~1.3s (cold, with sharp
+processing ~7 images; warm builds reuse the `node_modules/.astro` image cache); `npm run dev` serves `/`, `/work/`,
 and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constraint).
 
 ## Architecture
@@ -61,9 +62,21 @@ title, publishDate (coerced Date), img, description, tags[], role, client, year
 img_alt?, liveUrl?, repoUrl?
 ```
 
-`img` is a **string path into `public/`** (e.g. `/assets/instrugo.png`), not an `astro:assets`
-image reference. Project ordering everywhere is `publishDate` descending; the homepage slices the
-first 5.
+`img` uses the schema's function form (`schema: ({ image }) => …`), so it is an **`ImageMetadata`
+object**, not a string, and the frontmatter value is a path relative to the entry file
+(`../../assets/instrugo.png`). A bad path is a build error, not a 404. Project ordering everywhere
+is `publishDate` descending; the homepage slices the first 5.
+
+### Images
+
+Content images, `portrait.png` and `at-work.jpg` live in [src/assets/](src/assets/) and go through
+`astro:assets` — `<Image>` with explicit `widths`/`sizes`, emitting `.webp` srcsets into
+`dist/_astro/`. Intrinsic dimensions come from the file, so never hand-write `width`/`height`
+(the old hardcoded values on `at-work.jpg` and `portrait.png` were both wrong and caused CLS).
+
+**`public/assets/backgrounds/` deliberately stays in `public/`.** Those are consumed from CSS
+custom properties inside a `background` shorthand with blend modes in `BaseLayout` — Astro cannot
+srcset them, and the `/assets/*` cache header in [netlify.toml](netlify.toml) exists for them.
 
 ### Layout chain
 
@@ -121,10 +134,22 @@ which repaints after the class is already missing.
 [astro.config.mjs](astro.config.mjs) — drop that and social previews break silently, since
 scrapers ignore relative `og:image` paths.
 
-`image` / `imageAlt` props flow page → `BaseLayout` → `MainHead`, defaulting to
-`/assets/at-work.jpg`. Only [work/[...slug].astro](src/pages/work/%5B...slug%5D.astro) overrides
-them, passing the project's own `img` / `img_alt`. Only `twitter:card` is emitted; X, LinkedIn and
-Slack fall back to the `og:` tags for the rest, so don't duplicate them.
+Four props flow page → `BaseLayout` → `MainHead`. Adding one means editing both files:
+
+- `image` (`ImageMetadata`, **not** a string) / `imageAlt`, defaulting to `src/assets/at-work.jpg`.
+  Only [work/[...slug].astro](src/pages/work/%5B...slug%5D.astro) overrides them, passing the
+  project's own `img` / `img_alt`.
+- `ogType`, `'website'` by default; project pages pass `'article'`.
+- `noindex`, set only by [404.astro](src/pages/404.astro). It **replaces** the canonical link with
+  `<meta name="robots" content="noindex">` — a page that should not be indexed has no canonical
+  destination to name.
+
+`MainHead` runs `image` through `getImage()` at 1200×630, `fit: 'cover'`, `format: 'jpeg'`, and
+emits matching `og:image:width`/`height`. That derivative is ~34KB against multi-megabyte sources,
+which is what makes link previews actually resolve — keep it if you touch that code.
+
+Only `twitter:card` is emitted; X, LinkedIn and Slack fall back to the `og:` tags for the rest, so
+don't duplicate them.
 
 `@astrojs/sitemap` emits `sitemap-index.xml` + `sitemap-0.xml` at build, filtered to exclude
 `/404/`. [public/robots.txt](public/robots.txt) points at the index and is a static file — it does
@@ -182,12 +207,9 @@ There is no static adapter and none is needed — `output: 'static'` means Netli
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
 
-- OG images are the raw project screenshots, several of them multi-megabyte (`instrugo.png` is
-  3.9MB). Under X's 5MB cap, but scrapers often time out first — link previews are unreliable
-  until there are 1200x630 derivatives. Related to the `astro:assets` gap below.
-- `og:type` is `website` on every page, including `/work/<slug>/` project pages.
-- The 404 page emits a canonical URL. Not indexed (Netlify serves it with a 404 status), just odd.
-- Images are raw files in `public/` — no `astro:assets`, so no responsive/optimized output.
+- Astro emits every imported image's **original** into `dist/_astro/` alongside the derivatives,
+  even though no HTML references it — ~11MB of the 16MB `dist/` is these orphans. They are never
+  served, so this costs deploy size only.
 - `README.md` is still unmodified Astro starter boilerplate.
 - No CI (`.github/` does not exist). Deploys are Netlify-side only — see [Deployment](#deployment).
 - ~~Theme is lost on soft navigation.~~ Fixed — see [Theming](#theming).

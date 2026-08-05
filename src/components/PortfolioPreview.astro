@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -19,7 +20,15 @@ const { data, id } = Astro.props.project;
     </div>
   </div>
 
-  <img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+  {/* Cropped to fill the card by `object-fit: cover`, so only the rendered width matters. */}
+  <Image
+    src={data.img}
+    alt={data.img_alt || ''}
+    widths={[400, 800, 1200]}
+    sizes="(min-width: 50em) 50vw, 100vw"
+    loading="lazy"
+    decoding="async"
+  />
 
   <div class="scrim"></div>
 </a>
