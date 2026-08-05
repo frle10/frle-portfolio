@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # playwright mcp session artifacts
 .playwright-mcp/
+
+# netlify cli local link state (contains the site id)
+.netlify/

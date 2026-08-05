@@ -127,6 +127,30 @@ which repaints after the class is already missing.
 - Personal details (name, email, LinkedIn/GitHub/YouTube URLs, "Amsterdam") are hardcoded across
   components. There is no site-config module.
 
+## Deployment
+
+Netlify, site `frle-portfolio`, live at **https://frle.dev**. Repo is
+`git@github.com:frle10/frle-portfolio.git`; the default branch is `main` (renamed from `master` on
+2026-08-05). Pushing to `main` builds and publishes; PRs get deploy previews.
+
+[netlify.toml](netlify.toml) holds the build command, publish dir, a `[dev]` block, and cache
+headers, and it **overrides the dashboard's build settings** — change the file, not the UI.
+
+Two things the toml deliberately does not own:
+
+- **Production branch** and `allowed_branches` are site settings, unsettable from any file. They
+  are also read-only on the API's `build_settings` projection, so a `netlify api updateSite` call
+  carrying `build_settings` is silently ignored — writes must go through a full `repo` object, or
+  just use the dashboard.
+- **Node version** comes from [.nvmrc](.nvmrc) (currently `24`), which both `nvm use` and Netlify
+  read. A `NODE_VERSION` env var would override it; the site has none set, keep it that way.
+
+`netlify dev` runs the Astro dev server behind Netlify's proxy so the headers apply locally, unlike
+plain `npm run dev`. `netlify link` state lives in gitignored `.netlify/`.
+
+There is no static adapter and none is needed — `output: 'static'` means Netlify just serves
+`dist/`.
+
 ## Known gaps
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
@@ -136,6 +160,5 @@ Worth knowing before proposing changes; these are current facts, not a backlog:
   `description` doubled as `og:description`.
 - Images are raw files in `public/` — no `astro:assets`, so no responsive/optimized output.
 - `README.md` is still unmodified Astro starter boilerplate.
-- No deploy configuration in the repo (no `.github/`, no adapter, no host config). Remote is
-  `git@github.com:frle10/frle-portfolio.git`.
+- No CI (`.github/` does not exist). Deploys are Netlify-side only — see [Deployment](#deployment).
 - ~~Theme is lost on soft navigation.~~ Fixed — see [Theming](#theming).
