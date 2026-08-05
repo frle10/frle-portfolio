@@ -130,6 +130,16 @@ Slack fall back to the `og:` tags for the rest, so don't duplicate them.
 `/404/`. [public/robots.txt](public/robots.txt) points at the index and is a static file — it does
 not update itself if `site` changes.
 
+### RSS
+
+[src/pages/rss.xml.ts](src/pages/rss.xml.ts) is a `GET` endpoint built with `@astrojs/rss`. It
+carries **descriptions only** — no rendered post bodies, so no `markdown-it`/`sanitize-html`
+dependency. Items are the `work` collection sorted `publishDate` descending; `link` is relative and
+resolved against `context.site`. `MainHead` emits the `rel="alternate"` discovery link.
+
+`@astrojs/sitemap` only indexes pages, so `rss.xml` does not appear in `sitemap-0.xml` and the
+`filter` needs no widening. `robots.txt` has no feed directive — nothing to add there either.
+
 ## Conventions
 
 - Prettier config in [.prettierrc.json](.prettierrc.json): single quotes, semicolons, `printWidth`
@@ -172,7 +182,6 @@ There is no static adapter and none is needed — `output: 'static'` means Netli
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
 
-- No RSS feed.
 - OG images are the raw project screenshots, several of them multi-megabyte (`instrugo.png` is
   3.9MB). Under X's 5MB cap, but scrapers often time out first — link previews are unreliable
   until there are 1200x630 derivatives. Related to the `astro:assets` gap below.
