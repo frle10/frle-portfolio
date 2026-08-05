@@ -51,4 +51,4 @@ Photos and videos are uploaded, optimized, and served via a CDN-friendly solutio
 ## Technologies Used
 
 - **Backend:** Node.js with Express
-- **Database:** MongoDB + Mongoose
+- **Database:** PostgreSQL
