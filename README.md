@@ -28,7 +28,8 @@ The dev server runs at [localhost:4321](http://localhost:4321).
 | `npx astro check`        | Type-check — expected to stay at zero errors |
 | `npx prettier --write .` | Format; the repo is kept fully formatted     |
 
-There is no test suite and no CI. `astro check` is the only automated gate.
+There is no test suite. CI runs `astro check` and `prettier --check .` on every pull request and on
+`main`; Netlify handles the deploy separately.
 
 ## Structure
 
