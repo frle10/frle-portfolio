@@ -14,8 +14,9 @@ npx astro check          # type-check (no npm script for this yet)
 npx prettier --write .   # format (no npm script for this yet)
 ```
 
-There is no test suite, no linter, and no CI. `astro check` is the only automated gate — keep it
-at 0 errors / 0 warnings / 0 hints.
+There is no test suite and no linter. `astro check` is the only correctness gate — keep it at
+0 errors / 0 warnings / 0 hints. [.github/workflows/ci.yml](.github/workflows/ci.yml) runs it plus
+`prettier --check .` on every PR and on `main`; both must pass before merging.
 
 Verified working: `npm run build` produces 9 pages in ~1s cold (sharp processing ~7 images; warm
 builds reuse the `node_modules/.astro` image cache) for a 3.3MB `dist/`; `npm run dev` serves `/`,
@@ -221,5 +222,10 @@ There is no static adapter and none is needed — `output: 'static'` means Netli
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
 
-- No CI (`.github/` does not exist). Deploys are Netlify-side only — see [Deployment](#deployment).
+- Git history carries ~11.6MB of dead image blobs — the pre-webp sources, at both their
+  `public/assets/` and `src/assets/` paths, plus starter leftovers in `src/images/`. `.git` is 15MB
+  where the live tree needs ~2.5MB. **Considered and declined on 2026-08-05**: a `git filter-repo`
+  rewrite would rewrite all 59 commits and force-push, but GitHub's `refs/pull/*` refs pin the old
+  commits permanently, so server-side storage would not shrink at all — only fresh clones would.
+  Not worth breaking every SHA for a second of clone time. Do not re-propose without a new reason.
 - ~~Theme is lost on soft navigation.~~ Fixed — see [Theming](#theming).

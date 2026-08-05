@@ -1,0 +1,38 @@
+name: CI
+
+# Netlify already gates "does it build" — a failed build is never published, and pull requests
+# get a deploy preview whose failure shows up as a check. What it does not gate is correctness:
+# `astro build` transpiles without type checking, so a type error deploys cleanly. That is what
+# this workflow is for.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A force-push or a quick follow-up commit makes the in-flight run pointless; drop it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Same source of truth as `nvm use` locally and as Netlify's build image.
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Generates the content collection types itself on a cold checkout, so no `astro sync` step.
+      - name: Type check
+        run: npx astro check
+
+      # Prettier 3 reads .gitignore by default, so dist/ and .astro/ are skipped without a
+      # .prettierignore.
+      - name: Format check
+        run: npx prettier --check .
