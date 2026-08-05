@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Personal portfolio site for Ivan Skorupan. Static Astro site, no framework integrations, no
+Personal portfolio site for Ivan Skorupan. Static Astro site, no UI framework integrations, no
 server runtime. Forked from the official `astro portfolio` starter template and customized.
 
 ## Commands
@@ -22,7 +22,8 @@ and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constrain
 
 ## Architecture
 
-Astro 7, `output: 'static'` (the default — `astro.config.mjs` is an empty `defineConfig({})`).
+Astro 7, `output: 'static'` (the default). [astro.config.mjs](astro.config.mjs) sets `site` and
+one integration, `@astrojs/sitemap`.
 Every page is prerendered at build time. No client-side framework; interactivity is a handful of
 vanilla-TS custom elements defined inline in `.astro` `<script>` blocks.
 
@@ -113,6 +114,22 @@ runtime on `:root` (`theme-dark`, `loaded`) is dropped unless it is re-applied i
 `astro:before-swap` listener. Both are; add new ones there too rather than in `astro:after-swap`,
 which repaints after the class is already missing.
 
+### SEO and social tags
+
+[MainHead.astro](src/components/MainHead.astro) owns all of it. It builds the canonical link and
+`og:image` with `new URL(…, Astro.site)`, so both depend on `site` in
+[astro.config.mjs](astro.config.mjs) — drop that and social previews break silently, since
+scrapers ignore relative `og:image` paths.
+
+`image` / `imageAlt` props flow page → `BaseLayout` → `MainHead`, defaulting to
+`/assets/at-work.jpg`. Only [work/[...slug].astro](src/pages/work/%5B...slug%5D.astro) overrides
+them, passing the project's own `img` / `img_alt`. Only `twitter:card` is emitted; X, LinkedIn and
+Slack fall back to the `og:` tags for the rest, so don't duplicate them.
+
+`@astrojs/sitemap` emits `sitemap-index.xml` + `sitemap-0.xml` at build, filtered to exclude
+`/404/`. [public/robots.txt](public/robots.txt) points at the index and is a static file — it does
+not update itself if `site` changes.
+
 ## Conventions
 
 - Prettier config in [.prettierrc.json](.prettierrc.json): single quotes, semicolons, `printWidth`
@@ -155,9 +172,12 @@ There is no static adapter and none is needed — `output: 'static'` means Netli
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
 
-- `astro.config.mjs` sets no `site`, so no canonical URLs, no sitemap, no absolute OG URLs.
-- No `og:image`, no `twitter:` tags, no `robots.txt`, no sitemap, no RSS. `MainHead` emits only
-  `description` doubled as `og:description`.
+- No RSS feed.
+- OG images are the raw project screenshots, several of them multi-megabyte (`instrugo.png` is
+  3.9MB). Under X's 5MB cap, but scrapers often time out first — link previews are unreliable
+  until there are 1200x630 derivatives. Related to the `astro:assets` gap below.
+- `og:type` is `website` on every page, including `/work/<slug>/` project pages.
+- The 404 page emits a canonical URL. Not indexed (Netlify serves it with a 404 status), just odd.
 - Images are raw files in `public/` — no `astro:assets`, so no responsive/optimized output.
 - `README.md` is still unmodified Astro starter boilerplate.
 - No CI (`.github/` does not exist). Deploys are Netlify-side only — see [Deployment](#deployment).
