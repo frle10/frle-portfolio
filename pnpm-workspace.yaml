@@ -1,0 +1,8 @@
+# Not a workspace — pnpm 10+ reads its settings from this file even for a single package.
+#
+# pnpm blocks dependency install scripts by default and refuses to install until each one is
+# ruled on explicitly. esbuild's postinstall resolves its platform-specific binary, which Vite
+# needs, so it is allowed. Everything else stays blocked; sharp does not appear here because it
+# ships its binaries as optional dependencies rather than as a build script.
+allowBuilds:
+  esbuild: true

@@ -20,19 +20,23 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Installs the pnpm pinned by `packageManager` in package.json. Must run before setup-node,
+      # whose `cache: pnpm` needs pnpm on PATH to locate the store.
+      - run: corepack enable
+
       - uses: actions/setup-node@v7
         with:
           # Same source of truth as `nvm use` locally and as Netlify's build image.
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       # Generates the content collection types itself on a cold checkout, so no `astro sync` step.
       - name: Type check
-        run: npx astro check
+        run: pnpm exec astro check
 
       # Prettier 3 reads .gitignore by default, so dist/ and .astro/ are skipped without a
       # .prettierignore.
       - name: Format check
-        run: npx prettier --check .
+        run: pnpm exec prettier --check .

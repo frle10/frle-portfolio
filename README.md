@@ -10,23 +10,26 @@ custom elements, and all CSS is hand-written against a small set of design token
 
 ## Getting started
 
-Requires Node 24 (see [.nvmrc](.nvmrc); Astro 7 itself needs >=22.12.0).
+Requires Node 24 (see [.nvmrc](.nvmrc); Astro 7 itself needs >=22.12.0) and pnpm, which comes from
+corepack — no separate install, and the version is pinned by `packageManager` in
+[package.json](package.json).
 
 ```sh
 nvm use
-npm install
-npm run dev
+corepack enable
+pnpm install
+pnpm dev
 ```
 
 The dev server runs at [localhost:4321](http://localhost:4321).
 
-| Command                  | Action                                       |
-| :----------------------- | :------------------------------------------- |
-| `npm run dev`            | Dev server at `localhost:4321`               |
-| `npm run build`          | Static build to `./dist/`                    |
-| `npm run preview`        | Serve `./dist/` locally                      |
-| `npx astro check`        | Type-check — expected to stay at zero errors |
-| `npx prettier --write .` | Format; the repo is kept fully formatted     |
+| Command                        | Action                                       |
+| :----------------------------- | :------------------------------------------- |
+| `pnpm dev`                     | Dev server at `localhost:4321`               |
+| `pnpm build`                   | Static build to `./dist/`                    |
+| `pnpm preview`                 | Serve `./dist/` locally                      |
+| `pnpm exec astro check`        | Type-check — expected to stay at zero errors |
+| `pnpm exec prettier --write .` | Format; the repo is kept fully formatted     |
 
 There is no test suite. CI runs `astro check` and `prettier --check .` on every pull request and on
 `main`; Netlify handles the deploy separately.
