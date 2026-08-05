@@ -17,9 +17,9 @@ npx prettier --write .   # format (no npm script for this yet)
 There is no test suite, no linter, and no CI. `astro check` is the only automated gate — keep it
 at 0 errors / 0 warnings / 0 hints.
 
-Verified working: `npm run build` produces 9 pages in ~1.3s (cold, with sharp
-processing ~7 images; warm builds reuse the `node_modules/.astro` image cache); `npm run dev` serves `/`, `/work/`,
-and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constraint).
+Verified working: `npm run build` produces 9 pages in ~1s cold (sharp processing ~7 images; warm
+builds reuse the `node_modules/.astro` image cache) for a 4.7MB `dist/`; `npm run dev` serves `/`,
+`/work/`, and `/work/<slug>/` with 200s. Requires Node >=22.12.0 (Astro 7 engine constraint).
 
 ## Architecture
 
@@ -64,15 +64,29 @@ img_alt?, liveUrl?, repoUrl?
 
 `img` uses the schema's function form (`schema: ({ image }) => …`), so it is an **`ImageMetadata`
 object**, not a string, and the frontmatter value is a path relative to the entry file
-(`../../assets/instrugo.png`). A bad path is a build error, not a 404. Project ordering everywhere
+(`../../assets/instrugo.webp`). A bad path is a build error, not a 404. Project ordering everywhere
 is `publishDate` descending; the homepage slices the first 5.
 
 ### Images
 
-Content images, `portrait.png` and `at-work.jpg` live in [src/assets/](src/assets/) and go through
+Content images, `portrait.webp` and `at-work.jpg` live in [src/assets/](src/assets/) and go through
 `astro:assets` — `<Image>` with explicit `widths`/`sizes`, emitting `.webp` srcsets into
 `dist/_astro/`. Intrinsic dimensions come from the file, so never hand-write `width`/`height`
 (the old hardcoded values on `at-work.jpg` and `portrait.png` were both wrong and caused CLS).
+
+**Sources are pre-sized, and that is load-bearing.** The largest width any `<Image>` requests is
+1280, so sources cap at 1600 and are stored as quality-90 webp; `src/assets/` is 840KB total.
+They used to be 2816×1536 PNGs at 12MB. Keep new images to that budget — a 3MB source costs more
+than deploy weight, because of this:
+
+Astro emits every imported image's original into `dist/_astro/` next to its derivatives, and
+prunes the unreferenced ones — except the prune never fires for content-collection images. The
+content runtime rehydrates `data.img` by traversing the entry with `neotraverse`, which walks into
+the `ImageMetadata` proxy, and any property read is exactly what marks an original as referenced
+([astro#11887](https://github.com/withastro/astro/issues/11887), open since 2024). So every source
+ships whole, unreferenced, forever. At 840KB of sources that is 831KB of dead weight in a 4.7MB
+`dist/` — ignorable. At 12MB it was most of the build. Do not "fix" it with a post-build pruning
+script; that trades a silent-deletion hazard for bytes nobody downloads.
 
 **`public/assets/backgrounds/` deliberately stays in `public/`.** Those are consumed from CSS
 custom properties inside a `background` shorthand with blend modes in `BaseLayout` — Astro cannot
@@ -207,9 +221,6 @@ There is no static adapter and none is needed — `output: 'static'` means Netli
 
 Worth knowing before proposing changes; these are current facts, not a backlog:
 
-- Astro emits every imported image's **original** into `dist/_astro/` alongside the derivatives,
-  even though no HTML references it — ~11MB of the 16MB `dist/` is these orphans. They are never
-  served, so this costs deploy size only.
 - `README.md` is still unmodified Astro starter boilerplate.
 - No CI (`.github/` does not exist). Deploys are Netlify-side only — see [Deployment](#deployment).
 - ~~Theme is lost on soft navigation.~~ Fixed — see [Theming](#theming).
