@@ -9,7 +9,7 @@ interface Props {
 const { data, id } = Astro.props.project;
 ---
 
-<a class="card" href={`/work/${id}`}>
+<a class="card" href={`/work/${id}/`}>
   <div class="text-content">
     <span class="title">{data.title}</span>
     <div class="details">
@@ -60,12 +60,14 @@ const { data, id } = Astro.props.project;
     transition: box-shadow 0.4s ease;
   }
 
-  .card:hover {
+  .card:hover,
+  .card:focus-visible {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
   }
 
-  .card:hover::after {
+  .card:hover::after,
+  .card:focus-visible::after {
     box-shadow: inset 0 0 3rem 1rem hsla(0, 0%, 0%, 0.2);
   }
 
@@ -105,7 +107,7 @@ const { data, id } = Astro.props.project;
     justify-content: space-between;
 
     padding: 1rem;
-    color: var(--text-color);
+    color: var(--gray-50);
   }
 
   .title {
@@ -126,19 +128,14 @@ const { data, id } = Astro.props.project;
   }
 
   .details {
-    color: var(--text-color-subtle, var(--gray-300));
-  }
-
-  .details,
-  .scrim {
-    opacity: 0;
+    color: var(--gray-300);
   }
 
   .details p {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     margin: 0 0 0.75rem 0;
-    color: var(--text-color, var(--gray-50));
+    color: var(--gray-50);
     text-shadow: 0 1px 2px hsla(var(--gray-999-basis), 0.5);
 
     display: -webkit-box;
@@ -154,7 +151,7 @@ const { data, id } = Astro.props.project;
   }
 
   .tag {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: 500;
     padding: 0.25rem 0.625rem;
@@ -163,7 +160,7 @@ const { data, id } = Astro.props.project;
     background-color: hsla(var(--gray-0-basis), 0.2);
     backdrop-filter: blur(12px);
     border: 1px solid hsla(var(--gray-999-basis), 0.5);
-    color: var(--text-color, var(--gray-100));
+    color: var(--gray-100);
   }
 
   @media (min-width: 50em) {
@@ -171,6 +168,8 @@ const { data, id } = Astro.props.project;
       height: 22rem;
     }
 
+    /* Below this breakpoint there is no hover to reveal with, so the details stay visible.
+       Only hide them once the card is tall enough for the image to carry the card on its own. */
     .details,
     .scrim {
       opacity: 0;
@@ -178,7 +177,9 @@ const { data, id } = Astro.props.project;
     }
 
     .card:hover .details,
-    .card:hover .scrim {
+    .card:hover .scrim,
+    .card:focus-visible .details,
+    .card:focus-visible .scrim {
       opacity: 1;
     }
 

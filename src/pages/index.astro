@@ -44,11 +44,15 @@ const projects = (await getCollection('work'))
           </div>
         </Hero>
 
+        {/* LCP element — Astro's `<Image>` defaults to lazy, which defers the largest paint. */}
         <Image
           src={portrait}
           alt="Portrait of Ivan Skorupan"
           widths={[400, 800, portrait.width]}
           sizes="(min-width: 50em) 30em, 100vw"
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
         />
       </header>
 
@@ -172,7 +176,7 @@ const projects = (await getCollection('work'))
 
   .hero img:hover {
     transform: scale(1.02);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
   }
 
   @media (min-width: 50em) {
@@ -311,10 +315,11 @@ const projects = (await getCollection('work'))
     transition: all 0.2s ease-out;
   }
 
-  .mention-card a:hover {
-    background: var(--gradient-subtle-hover); /* Create a hover gradient */
+  .mention-card a:hover,
+  .mention-card a:focus-visible {
+    background: var(--gradient-subtle-hover);
     transform: translateY(-5px);
-    color: var(--accent);
+    color: var(--accent-regular);
   }
 
   .mention-card h4 {
@@ -324,7 +329,8 @@ const projects = (await getCollection('work'))
 
   .mention-card p {
     font-size: var(--text-sm);
-    color: var(--gray-400);
+    /* --gray-400 on --gradient-subtle is 4.19:1, under AA for this size. */
+    color: var(--gray-300);
     margin: 0;
   }
 

@@ -39,7 +39,7 @@ const isCurrentPage = (href: string) => {
 
     <menu-button>
       <template>
-        <button class="menu-button" aria-expanded="false">
+        <button class="menu-button" aria-expanded="false" aria-controls="menu-content">
           <span class="sr-only">Menu</span>
           <span class="icon-menu"><Icon icon="list" /></span>
           <span class="icon-close"><Icon icon="x" /></span>
@@ -48,21 +48,18 @@ const isCurrentPage = (href: string) => {
     </menu-button>
   </div>
 
-  <noscript>
-    <ul class="nav-items">
-      {
-        textLinks.map(({ label, href }) => (
-          <li>
-            <a aria-current={isCurrentPage(href) ? 'page' : undefined} class="link" href={href}>
-              {label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </noscript>
+  {
+    /*
+    Rendered open, and collapsed by script. The previous default was `hidden` in the server HTML
+    with only script to reveal it — so if that script failed to run while JS was still enabled,
+    <noscript> did not apply and the page had no navigation at all, on every viewport. Defaulting
+    to open means a script failure degrades to "menu already open".
 
-  <div id="menu-content" hidden>
+    That also makes a <noscript> copy of the links unnecessary: without JS the button (which lives
+    in the <template> above) never renders, and this stays open.
+  */
+  }
+  <div id="menu-content" class="menu-content">
     <ul class="nav-items">
       {
         textLinks.map(({ label, href }) => (
@@ -98,46 +95,85 @@ const isCurrentPage = (href: string) => {
       </div>
     </div>
   </div>
+
+  {
+    /*
+    Collapses the menu during parse, before first paint, so defaulting it to open above does not
+    flash an open dropdown on mobile hard loads. Deliberately inline and separate from the module
+    below: a module script is deferred, and if it fails this must not be what keeps the menu
+    reachable. Soft navigations are covered by connectedCallback, which runs before paint.
+  */
+  }
+  <script is:inline>
+    if (window.matchMedia('(max-width: 61.99em)').matches) {
+      document.getElementById('menu-content').hidden = true;
+    }
+  </script>
 </nav>
 
 <script>
   class MenuButton extends HTMLElement {
-    constructor() {
-      super();
-      this.appendChild(this.querySelector('template')!.content.cloneNode(true));
-      const btn = this.querySelector('button');
-      const menu = document.getElementById('menu-content');
+    private teardown?: () => void;
 
-      if (!btn || !menu) {
-        return;
+    // Setup lives here rather than in the constructor because the ClientRouter upgrades a fresh
+    // <menu-button> on every soft navigation. The media-query listener below outlives its element
+    // unless it is removed, so without a matching disconnectedCallback each navigation left one
+    // more listener holding a detached #menu-content.
+    connectedCallback() {
+      const template = this.querySelector('template');
+      if (!template) return;
+
+      // connectedCallback can fire more than once for the same element; only clone once.
+      if (!this.querySelector('button')) {
+        this.appendChild(template.content.cloneNode(true));
       }
 
-      menu.hidden = true;
-      menu.classList.add('menu-content');
+      const btn = this.querySelector('button');
+      const menu = document.getElementById('menu-content');
+      if (!btn || !menu) return;
 
       const setExpanded = (isExpanded: boolean) => {
         btn.setAttribute('aria-expanded', String(isExpanded));
         menu.hidden = !isExpanded;
       };
 
-      btn.addEventListener('click', () => {
-        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-        setExpanded(!isExpanded);
-      });
+      const onClick = () => setExpanded(btn.getAttribute('aria-expanded') !== 'true');
 
-      const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
-        const isMobile = e.matches;
-        btn.hidden = !isMobile;
-        if (isMobile) {
-          setExpanded(false);
-        } else {
-          setExpanded(true);
-        }
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key !== 'Escape') return;
+        // Above 62em the menu is permanently expanded and the button is hidden — nothing to close.
+        if (btn.hidden || btn.getAttribute('aria-expanded') !== 'true') return;
+        setExpanded(false);
+        btn.focus();
       };
 
-      const mediaQueries = window.matchMedia('(max-width: 61.99em)');
-      handleViewports(mediaQueries);
-      mediaQueries.addEventListener('change', handleViewports);
+      const onViewportChange = (event: MediaQueryList | MediaQueryListEvent) => {
+        const isMobile = event.matches;
+        btn.hidden = !isMobile;
+        setExpanded(!isMobile);
+      };
+
+      const mediaQuery = window.matchMedia('(max-width: 61.99em)');
+      onViewportChange(mediaQuery);
+
+      btn.addEventListener('click', onClick);
+      btn.addEventListener('keydown', onKeyDown);
+      // Keydown bubbles from the links inside, so this covers focus anywhere in the menu without
+      // a document-level listener.
+      menu.addEventListener('keydown', onKeyDown);
+      mediaQuery.addEventListener('change', onViewportChange);
+
+      this.teardown = () => {
+        btn.removeEventListener('click', onClick);
+        btn.removeEventListener('keydown', onKeyDown);
+        menu.removeEventListener('keydown', onKeyDown);
+        mediaQuery.removeEventListener('change', onViewportChange);
+      };
+    }
+
+    disconnectedCallback() {
+      this.teardown?.();
+      this.teardown = undefined;
     }
   }
 

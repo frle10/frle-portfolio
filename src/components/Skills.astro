@@ -37,24 +37,16 @@ const skillsData: SkillData[] = [
   {
     skillsData.map(skill => (
       <div class="skill-card">
-        <div class="card-content">
-          <div class="front">
-            <div class="icon-wrapper">
-              <Icon icon={skill.icon} color="var(--accent-regular)" size="2.5rem" gradient />
-            </div>
-            <h2 set:html={skill.title} />
-            <p>{skill.description}</p>
-          </div>
-
-          <div class="back">
-            <h2 set:html={skill.title} />
-            <ul class="tech-list" role="list">
-              {skill.tools.map(tool => (
-                <li>{tool}</li>
-              ))}
-            </ul>
-          </div>
+        <div class="icon-wrapper">
+          <Icon icon={skill.icon} color="var(--accent-regular)" size="2.5rem" gradient />
         </div>
+        <h2 set:html={skill.title} />
+        <p>{skill.description}</p>
+        <ul class="tech-list" role="list">
+          {skill.tools.map(tool => (
+            <li>{tool}</li>
+          ))}
+        </ul>
       </div>
     ))
   }
@@ -67,14 +59,18 @@ const skillsData: SkillData[] = [
     gap: 1.5rem;
   }
 
+  /* Content used to live on two faces that cross-faded on hover. That put the whole tech list
+     behind `visibility: hidden` on a non-focusable div — unreachable by keyboard and on touch,
+     and absent from the accessibility tree. One face, everything visible. */
   .skill-card {
-    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 1rem;
     border: 1px solid var(--gray-800);
     border-radius: 1.5rem;
     padding: 2rem;
     background-color: var(--gray-999_40);
     box-shadow: var(--shadow-sm);
-    overflow: hidden;
     transition:
       box-shadow 0.3s ease-out,
       transform 0.3s ease-out;
@@ -83,40 +79,6 @@ const skillsData: SkillData[] = [
   .skill-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
-  }
-
-  .card-content {
-    position: relative;
-    transition: transform 0.4s ease-out;
-  }
-
-  .front,
-  .back {
-    display: grid;
-    gap: 1rem;
-    transition:
-      opacity 0.4s ease-out,
-      visibility 0.4s;
-    backface-visibility: hidden;
-  }
-
-  .back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .skill-card:hover .front {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .skill-card:hover .back {
-    opacity: 1;
-    visibility: visible;
   }
 
   .icon-wrapper {
@@ -146,7 +108,7 @@ const skillsData: SkillData[] = [
   }
 
   .tech-list li {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: var(--text-base);
     font-weight: 500;
     color: var(--gray-300);
